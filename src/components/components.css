@@ -1,0 +1,157 @@
+.nav-bar {
+  display: flex;
+  /* margin-top: 6px; */
+  height: 60px;
+  justify-content: space-between;
+}
+
+.search-box {
+  display: flex;
+  margin-top: 10px;
+  height: 40px;
+  width: 60%;
+}
+
+.input-search {
+  height: 100%;
+  width: 80%;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.btn-search {
+  background: rgb(84, 150, 215);
+  margin: 0 5px;
+  height: 100%;
+  width: 50px;
+  font-size: 16px;
+  border: 0;
+}
+
+.btn-search:hover {
+  background: rgb(123, 183, 232);
+}
+
+.btn-search:active {
+  background: rgb(8, 88, 168);
+  color: antiquewhite;
+}
+
+.btn-filter {
+  position: relative;
+  background: rgb(39, 223, 73);
+  color: white;
+  display: none;
+  border: 0;
+  margin-right: 5px;
+  padding: 0 8px;
+  width: 70px;
+  height: 40px;
+}
+
+.btn-filter p {
+  font-size: 10pt;
+  position: absolute;
+  bottom: 0;
+  left: 30px;
+  /* margin: auto 0; */
+}
+
+.btn-filter:hover {
+  background: rgb(140, 230, 140);
+}
+
+.btn-filter:active {
+  background: rgb(23, 112, 59);
+}
+
+.icon-search {
+  color: white;
+}
+
+.icon-filter {
+  margin: auto 0;
+  font-size: 20pt;
+}
+
+.nav-bar img {
+  /* position: absolute; */
+  margin-right: 20px;
+  height: 63px;
+}
+
+.input-mobile {
+  display: none;
+  position: absolute;
+  top: 60px;
+  height: 54px;
+  padding: 7px;
+  background-color: aliceblue;
+}
+
+/* Mobile: width: <= 480px ~ 30em */
+@media only screen and (max-width: 30em) {
+  .search-box {
+    display: none;
+  }
+
+  .btn-filter {
+    display: flex;
+  }
+
+  .btn-filter:hover {
+    background: rgb(39, 223, 73);
+  }
+
+  .btn-filter:active {
+    background: rgb(23, 112, 59);
+  }
+
+  .icon-filter {
+    /* font-size: 25pt; */
+    width: 30px;
+    margin-left: 0;
+  }
+
+  .nav-bar img {
+    margin-right: 0;
+  }
+
+  .input-mobile {
+    display: flex;
+    width: 100%;
+  }
+
+  .input-search {
+    width: 90%;
+  }
+
+  .input-mobile .btn-search {
+    margin: 0;
+    margin-left: 5px;
+  }
+}
+
+/* Tablet: width: 481px ~ 30.0625em to 768px ~ 48em */
+@media only screen and (min-width: 30.0625em) and (max-width: 48em) {
+  .search-box {
+    width: 50%;
+    margin-left: 9%;
+  }
+
+  .nav-bar img {
+    margin-right: 10px;
+  }
+
+  .btn-filter {
+    display: flex;
+  }
+
+  .btn-filter:hover {
+    background: rgb(39, 223, 73);
+  }
+
+  .btn-filter:active {
+    background: rgb(23, 112, 59);
+  }
+}
