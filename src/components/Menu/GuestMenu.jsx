@@ -1,16 +1,26 @@
 import MenuPC from './MenuPC';
-import { LoginOutlined, HomeOutlined } from '@ant-design/icons';
+import {
+  LoginOutlined,
+  BookOutlined,
+  UserOutlined,
+  AccountBookOutlined,
+} from '@ant-design/icons';
 
 const menu = [
   {
-    icon: <HomeOutlined />,
-    text: 'Trang chủ',
+    icon: <BookOutlined />,
+    text: 'Sách',
     link: '/',
   },
   {
-    icon: <LoginOutlined />,
-    text: 'Đăng nhập',
-    link: '/login',
+    icon: <BookOutlined />,
+    text: 'Người dùng',
+    link: '/user',
+  },
+  {
+    icon: <AccountBookOutlined />,
+    text: 'Mượn sách',
+    link: '/borrow',
   },
 ];
 

@@ -7,7 +7,8 @@ import BookDetail from './BookDetail';
 const typeList = ['Đang hot', 'Mới ra mắt'];
 
 function ListBook(props) {
-  const [bookList, setBookList] = useState({ data: [] });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bookList, setBookList] = useState([{}, {}, {}, {}, {}]);
   const [bookID, setBookID] = useState(0);
   const [pageNum, setPageNum] = useState(1);
 
@@ -25,8 +26,8 @@ function ListBook(props) {
   }, [props.filter, props.search, props.type, pageNum]);
 
   const handleSeeDetail = (e) => {
-    document.getElementById('detail').classList.remove('hidden');
-    setBookID(e.currentTarget.attributes.bookid.nodeValue);
+    // document.getElementById('detail').classList.remove('hidden');
+    // setBookID(e.currentTarget.attributes.bookid.nodeValue);
   };
 
   const handleChoosePage = (p) => {
@@ -42,36 +43,43 @@ function ListBook(props) {
     setPageNum(1);
   };
 
+  const showModal = () => {
+    console.log('adada');
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="wrap-list">
-      <div className="title-list">
-        {props.type || props.type === 0 ? (
-          <div className="name-list">{typeList[props.type]}</div>
-        ) : (
-          <div className="name-list">Tìm kiếm cho {props.search}</div>
-        )}
-      </div>
+      <div className="title-list"></div>
       <div className="content-list">
-        {bookList.data.map((e, index) => (
+        {bookList.map((e, index) => (
           <div
             key={index}
             className="wrap-item"
             onClick={handleSeeDetail}
             bookid={e.booktitleid}
           >
-            <BookItem img={e.picture} name={e.bookname} />
+            <BookItem
+              img={e.picture}
+              name={e.bookname}
+              onShowDetail={showModal}
+            />
           </div>
         ))}
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
       </div>
       <div className="number-of-page-search">
         <div className="left-column-page-num">
           Trang:
           <button className="btn-number-page" onClick={handleJumpFirstPage}>
-            Về trang đầu
+            {'Trang 1'}
           </button>
           {pageNum === 1 || pageNum > bookList.pages + 1 ? (
             <></>
@@ -96,19 +104,18 @@ function ListBook(props) {
           )}
         </div>
         <div className="right-column-page-num">
-          <input
-            id="page-num-jump"
-            type="number"
-            placeholder="Nhập trang muốn đến"
-          />
+          <input id="page-num-jump" type="number" placeholder="Trang" />
           <button className="btn-number-page btn2" onClick={handleJumpPage}>
             Đi
           </button>
         </div>
       </div>
-      <div id="detail" className="wrap-book-detail hidden">
-        <BookDetail bookID={bookID} />
-      </div>
+      <BookDetail
+        bookID={bookID}
+        isModalOpen={isModalOpen}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+      />
     </div>
   );
 }

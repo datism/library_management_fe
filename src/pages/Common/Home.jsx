@@ -10,7 +10,6 @@ import ListBook from '../../components/Home/ListBook';
 const categoryList = ['Công nghệ', 'Gia đình'];
 
 function Home(props) {
-  const { type, param } = useParams();
   const [filter, setFilter] = useState({});
 
   const CheckFilterNumber = (num) => {};
@@ -66,86 +65,75 @@ function Home(props) {
     document.getElementById('filter-box').classList.add('close-filter');
   };
 
-  if (!type || type === 'search' || type === 'type') {
-    return (
-      <div className="home">
-        <div className="main">
-          {!type ? (
-            <>
-              <MiniListBook type={0} />
-              <MiniListBook type={1} />
-            </>
-          ) : type === 'type' ? (
-            <ListBook type={Number(param)} filter={filter} />
-          ) : (
-            <ListBook search={param} filter={filter} />
-          )}
-        </div>
-        <div className="filter">
-          <div id="filter-box" className="filter-box close-filter">
-            <div className="filter-title">Bộ lọc</div>
-            <div className="filter-item">
-              Thể loại
-              {/* <div className='filter-item-title'>Thể loại</div> */}
-              <div className="grid-container">
-                {categoryList.map((e, index) => (
-                  <div key={index} className="box-checkbox">
-                    <input
-                      className="input-checkbox"
-                      type="checkbox"
-                      // checked={index === check}
-                      // onChange={() => setCheck(index)}
-                    />
-                    {e}
-                  </div>
-                ))}
-              </div>
+  return (
+    <div className="home">
+      <div className="filter">
+        <div id="filter-box" className="filter-box close-filter">
+          <div className="filter-title">Bộ lọc</div>
+          <div className="filter-item">
+            Thể loại
+            {/* <div className='filter-item-title'>Thể loại</div> */}
+            <div className="grid-container">
+              {categoryList.map((e, index) => (
+                <div key={index} className="box-checkbox">
+                  <input
+                    className="input-checkbox"
+                    type="checkbox"
+                    // checked={index === check}
+                    // onChange={() => setCheck(index)}
+                  />
+                  {e}
+                </div>
+              ))}
             </div>
-            <div className="line"></div>
-            <div className="filter-item">
-              Số trang
-              <div className="minmax-input">
-                <input id="min-page" type="number" placeholder="min" />
-                <p>-</p>
-                <input id="max-page" type="number" placeholder="max" />
-              </div>
-              <p id="ft-warning1" className="warning hidden">
-                Cần nhập đúng định dạng!!!
-              </p>
+          </div>
+          <div className="line"></div>
+          <div className="filter-item">
+            Số trang
+            <div className="minmax-input">
+              <input id="min-page" type="number" placeholder="min" />
+              <p>-</p>
+              <input id="max-page" type="number" placeholder="max" />
             </div>
-            <div className="line"></div>
-            <div className="filter-item">
-              Năm xuất bản
-              <div className="minmax-input">
-                <input id="min-year" type="number" placeholder="min" />
-                <p>-</p>
-                <input id="max-year" type="number" placeholder="max" />
-              </div>
-              <p id="ft-warning2" className="warning hidden">
-                Cần nhập đúng định dạng!!!
-              </p>
+            <p id="ft-warning1" className="warning hidden">
+              Cần nhập đúng định dạng!!!
+            </p>
+          </div>
+          <div className="line"></div>
+          <div className="filter-item">
+            Năm xuất bản
+            <div className="minmax-input">
+              <input id="min-year" type="number" placeholder="min" />
+              <p>-</p>
+              <input id="max-year" type="number" placeholder="max" />
             </div>
-            <div className="line"></div>
-            <div className="filter-item">
-              Tác giả
-              <br />
-              <input
-                id="author-input"
-                className="input-full"
-                placeholder="Nhập tên tác giả"
-              />
-            </div>
-            <div className="wrap-button-filter">
-              <button className="button-submit" onClick={handleFilter}>
-                Lọc
-              </button>
-              <button className="button-submit">Hủy lọc</button>
-            </div>
+            <p id="ft-warning2" className="warning hidden">
+              Cần nhập đúng định dạng!!!
+            </p>
+          </div>
+          <div className="line"></div>
+          <div className="filter-item">
+            Tác giả
+            <br />
+            <input
+              id="author-input"
+              className="input-full"
+              placeholder="Nhập tên tác giả"
+            />
+          </div>
+          <div className="wrap-button-filter">
+            <button className="button-submit" onClick={handleFilter}>
+              Lọc
+            </button>
+            <button className="button-submit">Hủy lọc</button>
           </div>
         </div>
       </div>
-    );
-  }
+      <div className="main">
+        <ListBook filter={filter} />
+      </div>
+    </div>
+  );
 }
 
 export default Home;

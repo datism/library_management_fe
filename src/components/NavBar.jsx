@@ -43,15 +43,7 @@ function NavBar(props) {
 
   return (
     <div className="nav-bar">
-      <div style={{ width: '70px' }}>
-        {role === null ? (
-          <GuestMenu subMenu={props.subMenu} />
-        ) : role === '2' ? (
-          <ReaderMenu subMenu={props.subMenu} />
-        ) : (
-          <LibrarianMenu subMenu={props.subMenu} />
-        )}
-      </div>
+      <img src="/images/library.jpeg" alt="logo" />
       <div className="search-box">
         <button className="btn-filter" onClick={handleOpenFilter}>
           <FilterOutlined className="icon-filter" />
@@ -66,7 +58,6 @@ function NavBar(props) {
           <SearchOutlined className="icon-search" />
         </button>
       </div>
-      <img src="/images/library.jpeg" alt="logo" />
       <div className="input-mobile">
         <button className="btn-filter" onClick={handleOpenFilter}>
           <FilterOutlined className="icon-filter" />
@@ -76,6 +67,9 @@ function NavBar(props) {
         <button className="btn-search" onClick={handleSearchMobile}>
           <SearchOutlined className="icon-search" />
         </button>
+      </div>
+      <div style={{ width: '70px' }}>
+        <GuestMenu subMenu={props.subMenu} />
       </div>
     </div>
   );

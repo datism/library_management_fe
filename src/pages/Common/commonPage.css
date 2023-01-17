@@ -4,7 +4,8 @@
 }
 
 .main {
-  width: 60%;
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .close-filter {
@@ -12,10 +13,11 @@
 }
 
 .filter {
-  position: relative;
   width: 28%;
-  margin-left: 8%;
-  margin-top: 50px;
+  margin-left: 20px;
+  margin-top: 32px;
+  height: fit-content;
+  top: 100px;
 }
 
 .icon-search {
@@ -29,7 +31,6 @@
   height: max-content;
   border-radius: 10px;
   padding-bottom: 10px;
-  margin-bottom: 50px;
 }
 
 .filter-title {
@@ -247,11 +248,14 @@
   .filter-box {
     position: fixed;
     right: 20px;
+    left: 20px;
     top: 130px;
-    width: 300px;
+    width: calc(100% - 40px);
+    z-index: 10;
     height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
+    background: rgba(96, 167, 136);
   }
 
   .filter-box::-webkit-scrollbar {

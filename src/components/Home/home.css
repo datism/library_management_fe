@@ -1,8 +1,7 @@
 .wrap-list {
   user-select: none;
   display: inline-block;
-  width: 100%;
-  margin: 30px 10% 30px 5%;
+  margin: 30px 16px 30px 5%;
 }
 
 .title-list {
@@ -48,8 +47,8 @@
 .content-list {
   width: 100%;
   display: grid;
-  grid-gap: 8px;
-  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  grid-gap: 12px;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 img {
@@ -58,7 +57,6 @@ img {
 
 .wrap-item {
   position: relative;
-  padding-top: 175%;
 }
 
 .book-item {
@@ -347,6 +345,7 @@ img {
   border-radius: 5px;
   padding: 0 10px;
   margin-left: 20px;
+  color: black;
 }
 
 .number-of-page-search .btn-number-page:hover {
@@ -521,7 +520,7 @@ img {
 /* Responsive for grid container */
 @media only screen and (min-width: 61em) and (max-width: 80em) {
   .content-list {
-    gap: 5px;
+    gap: 16px;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   }
 
@@ -532,7 +531,7 @@ img {
 
 @media only screen and (min-width: 30.0625em) and (max-width: 61em) {
   .content-list {
-    gap: 3px;
+    gap: 8px;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
 
@@ -543,7 +542,7 @@ img {
 
 @media only screen and (max-width: 30em) {
   .content-list {
-    gap: 3px;
+    gap: 8px;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   }
 
