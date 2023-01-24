@@ -6,8 +6,7 @@ import { useState } from 'react';
 
 import MiniListBook from '../../components/Home/MiniListBook';
 import ListBook from '../../components/Home/ListBook';
-
-const categoryList = ['Công nghệ', 'Gia đình'];
+import { type } from '../../components/Home/BookDetail';
 
 function Home(props) {
   const [filter, setFilter] = useState({});
@@ -74,7 +73,7 @@ function Home(props) {
             Thể loại
             {/* <div className='filter-item-title'>Thể loại</div> */}
             <div className="grid-container">
-              {categoryList.map((e, index) => (
+              {type.map((e, index) => (
                 <div key={index} className="box-checkbox">
                   <input
                     className="input-checkbox"
@@ -89,27 +88,13 @@ function Home(props) {
           </div>
           <div className="line"></div>
           <div className="filter-item">
-            Số trang
-            <div className="minmax-input">
-              <input id="min-page" type="number" placeholder="min" />
-              <p>-</p>
-              <input id="max-page" type="number" placeholder="max" />
-            </div>
-            <p id="ft-warning1" className="warning hidden">
-              Cần nhập đúng định dạng!!!
-            </p>
-          </div>
-          <div className="line"></div>
-          <div className="filter-item">
-            Năm xuất bản
-            <div className="minmax-input">
-              <input id="min-year" type="number" placeholder="min" />
-              <p>-</p>
-              <input id="max-year" type="number" placeholder="max" />
-            </div>
-            <p id="ft-warning2" className="warning hidden">
-              Cần nhập đúng định dạng!!!
-            </p>
+            Sách
+            <br />
+            <input
+              id="book-input"
+              className="input-full"
+              placeholder="Nhập tên sách"
+            />
           </div>
           <div className="line"></div>
           <div className="filter-item">

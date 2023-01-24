@@ -3,25 +3,23 @@ import { useEffect, useState } from 'react';
 import './home.css';
 import BookItem from './BookItem';
 import BookDetail from './BookDetail';
+import axios from 'axios';
+import { BE_URL } from '../../constant';
 
 const typeList = ['Đang hot', 'Mới ra mắt'];
 
 function ListBook(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [bookList, setBookList] = useState([{}, {}, {}, {}, {}]);
+  const [bookList, setBookList] = useState([]);
   const [bookID, setBookID] = useState(0);
   const [pageNum, setPageNum] = useState(1);
-
+  const [bookSelected, setBookSelected] = useState();
+  const fetchData = async () => {
+    console.log('11111');
+    const res = await axios.get(`${BE_URL}/books`);
+    setBookList(res.data);
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      if (props.type === 0) {
-        // Call API here
-      } else if (props.type === 1) {
-        // Call API here
-      } else {
-        // Call API here
-      }
-    };
     fetchData();
   }, [props.filter, props.search, props.type, pageNum]);
 
@@ -43,17 +41,23 @@ function ListBook(props) {
     setPageNum(1);
   };
 
-  const showModal = () => {
-    console.log('adada');
+  const showModal = (e) => {
+    setBookSelected(e);
     setIsModalOpen(true);
   };
 
   const handleOk = () => {
+    fetchData();
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+
+  const onCreateNewBook = () => {
+    setBookSelected(null);
+    setIsModalOpen(true);
   };
 
   return (
@@ -68,9 +72,10 @@ function ListBook(props) {
             bookid={e.booktitleid}
           >
             <BookItem
-              img={e.picture}
-              name={e.bookname}
-              onShowDetail={showModal}
+              book={e}
+              onShowDetail={() => {
+                showModal(e);
+              }}
             />
           </div>
         ))}
@@ -109,12 +114,22 @@ function ListBook(props) {
             Đi
           </button>
         </div>
+        <button
+          style={{
+            width: 100,
+            cursor: 'pointer',
+          }}
+          onClick={onCreateNewBook}
+        >
+          Tạo sách
+        </button>
       </div>
       <BookDetail
-        bookID={bookID}
+        bookID={bookSelected?._id}
         isModalOpen={isModalOpen}
         handleOk={handleOk}
         handleCancel={handleCancel}
+        book={bookSelected}
       />
     </div>
   );

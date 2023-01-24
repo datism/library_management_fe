@@ -1,8 +1,9 @@
 import './home.css';
 import { Card } from 'antd';
+import { arrayBufferToBase64 } from '../../helpers';
 
 function BookItem(props) {
-  const { onShowDetail } = props;
+  const { onShowDetail, book } = props;
   return (
     <Card
       hoverable
@@ -18,8 +19,12 @@ function BookItem(props) {
           style={{
             width: '100%',
             padding: '0px',
+            height: 200,
           }}
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+          src={
+            'data:image/jpeg;base64,' +
+            arrayBufferToBase64(book.cover.image.data)
+          }
           onClick={onShowDetail}
         />
       }
@@ -36,17 +41,29 @@ function BookItem(props) {
           style={{
             fontSize: 18,
             fontWeight: 600,
+            marginBottom: 8,
           }}
         >
-          Book
+          {book.title}
+        </p>
+        <p
+          style={{
+            fontSize: 13,
+            fontWeight: 500,
+            marginBottom: 8,
+            fontStyle: 'italic',
+          }}
+        >
+          {book.type}
         </p>
         <p
           style={{
             fontSize: 16,
             fontWeight: 500,
+            marginBottom: 8,
           }}
         >
-          Nguyen Van Duc
+          {book.publisher}
         </p>
       </div>
     </Card>

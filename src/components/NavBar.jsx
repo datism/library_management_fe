@@ -8,7 +8,6 @@ import ReaderMenu from './Menu/ReaderMenu';
 
 function NavBar(props) {
   const navigate = useNavigate();
-  const role = localStorage.getItem('role');
 
   const handleSearch = () => {
     const inputSearch = document.querySelector('.input-search');
