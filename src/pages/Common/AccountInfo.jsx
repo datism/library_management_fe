@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import './commonPage.css'
 
 const test = {
-  name: 'Hà Nhật Tuấn',
+  name: 'Bùi Minh Đức',
   phone: '123456789',
   email: 'abc@ok.com',
   gender: 0
@@ -13,13 +13,13 @@ const test = {
 const genderList = ['Nam', 'Nữ', 'Khác'];
 
 function AccountInfo() {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [ gender, setGender ] = useState(test.gender);
 
   useEffect(() => {
     const role = localStorage.getItem('role')
     if (role === null) {
-      navigate('/')
+      //navigate('/')
     }
   })
 
@@ -55,7 +55,7 @@ function AccountInfo() {
         <div className="box-member gender">
           <div className="label">Giới tính: </div>
           <div id="gender" className="input-box">
-            {genderList.map((e, index) => 
+            {genderList.map((e, index) =>
               <div key={index} className='box-radio'>
                 <input
                   className={index ? 'input-radio' : 'input-radio first-radio'}

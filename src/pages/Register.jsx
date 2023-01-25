@@ -3,17 +3,18 @@ import { useNavigate } from 'react-router-dom'
 
 import './pages.css'
 import logo from '../images/logo1.jpg'
+import { SERVER_ADDR } from '../api/serverAddr'
 
 function Register() {
   const genderList = ['Nam', 'Nữ', 'Khác'];
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [ gender, setGender ] = useState(-1);
   const [ response, setResponse ] = useState('');
 
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== null) {
-      navigate('/');
+      //navigate('/');
     }
   })
 
@@ -87,7 +88,22 @@ function Register() {
   }
 
   const handleSignUp = async () => {
-    // call API
+    if (CheckValidate()) {
+      const data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=auth&action=signUp`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          password,
+          email,
+          fullname,
+          gender,
+          phone
+        })
+      });
+
+      setResponse(await data.json());
+      document.getElementById('warning8').classList.remove('hidden');
+    }
   }
 
   return (
