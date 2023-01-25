@@ -14,14 +14,37 @@ function ListBook(props) {
   const [bookID, setBookID] = useState(0);
   const [pageNum, setPageNum] = useState(1);
   const [bookSelected, setBookSelected] = useState();
+  const [total, setTotal] = useState(0);
+
   const fetchData = async () => {
-    console.log('11111');
-    const res = await axios.get(`${BE_URL}/books`);
-    setBookList(res.data);
+    const filter = {};
+    Object.keys(props.filter).forEach((e) => {
+      if (props.filter[e] && e != 'type') {
+        filter[e] = props.filter[e];
+      }
+    });
+    let type = [];
+    Object.keys(props.filter.type).forEach((e) => {
+      if (props.filter.type[e]) {
+        type.push(e);
+      }
+    });
+    if (type.length > 0) {
+      filter.type = type;
+    }
+    const res = await axios.get(`${BE_URL}/books`, {
+      params: {
+        currentPage: pageNum,
+        itemsPerPage: 10,
+        ...filter,
+      },
+    });
+    setBookList(res.data.items);
+    setTotal(res.data.totalItems);
   };
   useEffect(() => {
     fetchData();
-  }, [props.filter, props.search, props.type, pageNum]);
+  }, [props.filter, pageNum]);
 
   const handleSeeDetail = (e) => {
     // document.getElementById('detail').classList.remove('hidden');
@@ -86,7 +109,7 @@ function ListBook(props) {
           <button className="btn-number-page" onClick={handleJumpFirstPage}>
             {'Trang 1'}
           </button>
-          {pageNum === 1 || pageNum > bookList.pages + 1 ? (
+          {pageNum === 1 || pageNum > total / 10 + 1 ? (
             <></>
           ) : (
             <div
@@ -97,7 +120,7 @@ function ListBook(props) {
             </div>
           )}
           <div className="page-number selected">{pageNum}</div>
-          {pageNum >= bookList.pages ? (
+          {pageNum >= total / 10 ? (
             <></>
           ) : (
             <div

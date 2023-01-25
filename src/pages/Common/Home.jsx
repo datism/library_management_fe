@@ -9,59 +9,50 @@ import ListBook from '../../components/Home/ListBook';
 import { type } from '../../components/Home/BookDetail';
 
 function Home(props) {
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState({
+    title: '',
+    publisher: '',
+    type: {},
+  });
+  const [filterDraft, setFilterDraft] = useState({
+    title: '',
+    publisher: '',
+    type: {},
+  });
 
-  const CheckFilterNumber = (num) => {};
-
-  const CheckValidate = () => {
-    let flag = true;
-
-    let minPage = Number(document.getElementById('min-page').value);
-    let maxPage = Number(document.getElementById('max-page').value);
-    let warning = document.getElementById('ft-warning1');
-    CheckFilterNumber(minPage);
-    if (
-      !Number.isInteger(minPage) ||
-      minPage < 0 ||
-      !Number.isInteger(maxPage) ||
-      maxPage < 0 ||
-      (minPage > maxPage && document.getElementById('max-page').value !== '')
-    ) {
-      warning.classList.remove('hidden');
-      flag = false;
-    } else {
-      warning.classList.add('hidden');
-      if (minPage === 0) minPage = '';
-      if (maxPage === 0) maxPage = '';
-    }
-
-    let minYear = Number(document.getElementById('min-year').value);
-    let maxYear = Number(document.getElementById('max-year').value);
-    warning = document.getElementById('ft-warning2');
-    if (!Number.isInteger(minYear) || !Number.isInteger(maxYear)) {
-      warning.classList.remove('hidden');
-      flag = false;
-    } else {
-      if (minYear === 0) minYear = '';
-      if (maxYear === 0) maxYear = '';
-      warning.classList.add('hidden');
-    }
-
-    if (flag)
-      setFilter({
-        minPage,
-        maxPage,
-        minYear,
-        maxYear,
-        author: document.getElementById('author-input').value,
-      });
-    return flag;
+  const handleFilter = () => {
+    setFilter({
+      ...filterDraft,
+    });
   };
 
-  const handleFilter = async () => {
-    CheckValidate();
+  const cancelFilter = () => {
+    const reNew = {
+      title: '',
+      publisher: '',
+      type: {},
+    };
+    setFilter(reNew);
+    setFilterDraft(reNew);
+  };
 
-    document.getElementById('filter-box').classList.add('close-filter');
+  const setCheck = (e) => {
+    setFilterDraft({
+      ...filterDraft,
+      type: {
+        ...filterDraft.type,
+        [e]: !filterDraft.type[e],
+      },
+    });
+  };
+
+  const onChangeValue = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setFilterDraft({
+      ...filterDraft,
+      [name]: value,
+    });
   };
 
   return (
@@ -78,8 +69,8 @@ function Home(props) {
                   <input
                     className="input-checkbox"
                     type="checkbox"
-                    // checked={index === check}
-                    // onChange={() => setCheck(index)}
+                    checked={filterDraft.type[e]}
+                    onChange={() => setCheck(e)}
                   />
                   {e}
                 </div>
@@ -91,9 +82,11 @@ function Home(props) {
             Sách
             <br />
             <input
-              id="book-input"
               className="input-full"
               placeholder="Nhập tên sách"
+              name="title"
+              value={filterDraft.title}
+              onChange={onChangeValue}
             />
           </div>
           <div className="line"></div>
@@ -101,16 +94,19 @@ function Home(props) {
             Tác giả
             <br />
             <input
-              id="author-input"
               className="input-full"
               placeholder="Nhập tên tác giả"
+              name="publisher"
+              onChange={onChangeValue}
             />
           </div>
           <div className="wrap-button-filter">
             <button className="button-submit" onClick={handleFilter}>
               Lọc
             </button>
-            <button className="button-submit">Hủy lọc</button>
+            <button className="button-submit" onClick={cancelFilter}>
+              Hủy lọc
+            </button>
           </div>
         </div>
       </div>

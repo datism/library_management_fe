@@ -43,7 +43,7 @@ function NavBar(props) {
   return (
     <div className="nav-bar">
       <img src="/images/library.jpeg" alt="logo" />
-      <div className="search-box">
+      {/* <div className="search-box">
         <button className="btn-filter" onClick={handleOpenFilter}>
           <FilterOutlined className="icon-filter" />
           <p>Lọc</p>
@@ -56,8 +56,8 @@ function NavBar(props) {
         <button className="btn-search" onClick={handleSearch}>
           <SearchOutlined className="icon-search" />
         </button>
-      </div>
-      <div className="input-mobile">
+      </div> */}
+      {/* <div className="input-mobile">
         <button className="btn-filter" onClick={handleOpenFilter}>
           <FilterOutlined className="icon-filter" />
           <p>Lọc</p>
@@ -66,7 +66,7 @@ function NavBar(props) {
         <button className="btn-search" onClick={handleSearchMobile}>
           <SearchOutlined className="icon-search" />
         </button>
-      </div>
+      </div> */}
       <div style={{ width: '70px' }}>
         <GuestMenu subMenu={props.subMenu} />
       </div>
