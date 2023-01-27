@@ -1,6 +1,6 @@
 import Home from '../pages/Common/Home'
 import AccountInfo from '../pages/Common/AccountInfo'
-import BookBorrow from '../pages/Reader/BookBorrow'
+import Borrow from '../pages/Reader/Borrow'
 import History from '../pages/Reader/History'
 
 export const PUBLIC_ROUTER = [
@@ -33,9 +33,9 @@ export const PUBLIC_ROUTER = [
     subMenu: 1
   },
   {
-    key: 'BookBorrow',
-    path: '/BookBorrow',
-    element: <BookBorrow />,
+    key: 'Borrow',
+    path: '/Borrow',
+    element: <Borrow />,
     exact: true,
     subMenu: 2
   },
