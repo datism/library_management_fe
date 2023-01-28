@@ -10,7 +10,7 @@ import { BE_URL } from '../../constant';
 
 
 function Borrow(props) {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const [bookList, setBookList] = useState([]);
   const [ checked, setChecked ] = useState([]);
   const [ subscriberID,  setSubscriberID ] = useState(0);
@@ -19,14 +19,14 @@ function Borrow(props) {
   const [bookSelected, setBookSelected] = useState();
   const [ response, setResponse ] = useState('');
 
-  useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== '2') {
-      navigate('/');
-    }
+  // useEffect(() => {
+  //   const role = localStorage.getItem('role');
+  //   if (role !== '2') {
+  //     navigate('/');
+  //   }
 
-    getUserID();
-  }, [navigate])
+  //   getUserID();
+  // }, [navigate])
 
   const getUserID = async () => {
     const res = await axios.get(`${BE_URL}/auth`);
