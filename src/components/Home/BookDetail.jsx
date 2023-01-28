@@ -61,7 +61,6 @@ function BookDetail(props) {
     Object.keys(value).forEach((e) => {
       if (!bookID) {
         if (!value[e]) {
-          console.log('adadad', e);
           check = false;
         } else if ((e == 'type' || e == 'category') && value[e] == 'None') {
           check = false;

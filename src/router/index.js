@@ -1,5 +1,6 @@
 import AccountInfo from '../pages/Common/AccountInfo';
 import Home from '../pages/Common/Home';
+import User from '../pages/User';
 
 export const PUBLIC_ROUTER = [
   {
@@ -7,27 +8,11 @@ export const PUBLIC_ROUTER = [
     path: '/',
     element: <Home />,
     exact: true,
-    subMenu: 0,
   },
   {
-    key: 'homeChildren',
-    path: '/:type',
-    element: <Home />,
+    key: 'user',
+    path: '/user',
+    element: <User />,
     exact: true,
-    subMenu: 0,
-  },
-  {
-    key: 'homeChildren2',
-    path: '/:type=:param',
-    element: <Home />,
-    exact: true,
-    subMenu: 0,
-  },
-  {
-    key: 'AccountInfo',
-    path: '/AccountInfo',
-    element: <AccountInfo />,
-    exact: true,
-    subMenu: 1,
   },
 ];
