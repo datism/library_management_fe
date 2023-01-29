@@ -1,162 +1,317 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
-import {
-  ShoppingOutlined,
-} from '@ant-design/icons'
-
-import { SERVER_ADDR } from '../../api/serverAddr'
+import { Button, Modal } from 'antd';
+import React, { useState } from 'react';
+import 'antd/dist/antd.css';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { BE_URL } from '../../constant';
+import { arrayBufferToBase64 } from '../../helpers';
 
 function BookDetail(props) {
-  //const navigate = useNavigate();
-  var role = localStorage.getItem('role');
-  const [ detail, setDetail ] = useState(null);
-  const [ response, setResponse ] = useState('');
+  const { isModalOpen, handleOk, handleCancel, book, bookID } = props;
+  const [value, setValue] = useState({});
 
   useEffect(() => {
-
-    if (props.bookID) fetchData();
-  }, [props.bookID, role]);
-
-  const fetchData = async () => {
-    var data;
-    if (role === '1') {
-      data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=booktitle&action=findById&id=${props.bookID}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-        }
+    if (!bookID) {
+      setValue({
+        title: '',
+        description: '',
+        publisher: '',
+        type: '',
+        image: null,
+        cover: null,
+        category: '',
       });
+      return;
     }
-    else data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=booktitle&action=getById&id=${props.bookID}`);
+    if (!book) return;
 
-
-    const res = await data.json();
-    if (typeof res !== 'string') {
-      setDetail(await res);
-    } else {
-      setResponse(await res);
-    }
-    // console.log(res);
-  }
-
-  const handleExitDetail = () => {
-    document.getElementById('detail').classList.add('hidden');
-  }
-
-  const handleAddToCart = async () => {
-    const data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=cart&action=add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-      },
-      body: JSON.stringify({
-        booktitleid: props.bookID
-      })
+    setValue({
+      title: book.title,
+      description: book.description,
+      publisher: book.publisher,
+      type: book.type,
+      image:
+        'data:image/jpeg;base64,' + arrayBufferToBase64(book.cover.image.data),
+      cover: null,
+      category: book.category,
     });
+  }, [bookID]);
 
-    setResponse(await data.json());
-    setTimeout(() => {
-      setResponse('');
-    }, 2000)
-  }
+  const onChange = (e) => {
+    const name = e.target.name;
+    const value1 = e.target.value;
+    const newValue = {
+      ...value,
+      [name]: value1,
+    };
+    setValue(newValue);
+  };
 
-  const handleModify = () => {
-    //navigate(`/BookTitle/${props.bookID}`);
-  }
-
-  const handleAddBook = async () => {
-    const data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=book&action=create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-      },
-      body: JSON.stringify({
-        "booktitleid": props.bookID
-    })
+  const onChangeImage = (e) => {
+    const value1 = e.target.files[0];
+    setValue({
+      ...value,
+      image: URL.createObjectURL(value1),
+      cover: value1,
     });
+  };
 
-    const res = await data.json();
-    setResponse(await res);
-
-    console.log(res);
-
-    fetchData();
-    setTimeout(() => {
-      setResponse('');
-    }, 2000);
-  }
-
-  if (detail) return (
-    <div className='book-detail'>
-      <div className="button-X" onClick={handleExitDetail}></div>
-      <div className="main-detail">
-        <div className="book-content">
-          <div className="left-column">
-            <img
-              src={detail.picture}
-              alt={detail.bookname}
-            />
-          </div>
-          <div className="right-column">
-            <div className="bookname">{detail.bookname}</div>
-            <div className="description member-book-detail"><b>Mô tả:</b> <i>{detail.description}</i></div>
-            <div className="author member-book-detail">
-              <b>Tác giả:</b> <i>{detail.author.map((e, index) => index === detail.author.length - 1 ? ` ${e}` : ` ${e},`)}</i>
-            </div>
-            <div className="year-page member-book-detail">
-              <div className="year"><b>Năm xuất bản: </b> <i>{detail.publishyear}</i></div>
-              <div><b>Số trang: </b> <i>{detail.pages}</i></div>
-            </div>
-            <div className="category member-book-detail">
-              <b>Thể loại: </b><i>{detail.category.map((e, index) => index === detail.category.length - 1 ? ` ${e}` : ` ${e},`)}</i>
-            </div>
-            <div className="quantity member-book-detail">
-              <div className="total"><b>Tổng số cuốn: </b> <i>{detail.quantity}</i></div>
-              <div><b>Số cuốn còn lại: </b> <i>{detail.quantityleft}</i></div>
-            </div>
-            {
-              role === '1' ?
-                <div className="book-id member-book-detail">
-                  <b>Mã cuốn sách: </b>
-                  <div>
-                    {console.log(detail)}
-                    {console.log(detail.books)}
-                    {detail.books.map((e, index) =>
-                      <p key={index}>{e.bookid}</p>
-                    )}
-                  </div>
-                </div>
-                :
-                <></>
-            }
-          </div>
-        </div>
-        {
-          role === '2' ?
-            <button onClick={handleAddToCart}>
-              <ShoppingOutlined className="btn-icon" />
-              Thêm vào giỏ
-            </button>
-            : role === '1' ?
-              <div className="button-librarian">
-                <button onClick={handleModify}>
-                  Chỉnh sửa
-                </button>
-                <button onClick={handleAddBook}>
-                  Thêm cuốn sách
-                </button>
-              </div>
-              :
-              <></>
+  const onOk = async () => {
+    let check = true;
+    Object.keys(value).forEach((e) => {
+      if (!bookID) {
+        if (!value[e]) {
+          check = false;
+        } else if ((e == 'type' || e == 'category') && value[e] == 'None') {
+          check = false;
         }
-        <p id="response-book-detail" className="response">{response}</p>
+      } else {
+        if (e != 'cover' && !value[e]) {
+          check = false;
+        } else if ((e == 'type' || e == 'category') && value[e] == 'None') {
+          check = false;
+        }
+      }
+    });
+    if (!check) return;
+    const formData = new FormData();
+    Object.keys(value).forEach((e) => {
+      if (value[e]) {
+        formData.append(e, value[e]);
+      }
+    });
+    const config = {
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    };
+    if (bookID) {
+      await axios.put(`${BE_URL}/books/${book._id}`, formData, config);
+    } else {
+      await axios.post(`${BE_URL}/books/`, formData, config);
+    }
+    handleOk();
+  };
+
+  return (
+    <Modal
+      style={{
+        height: 100,
+        width: 100,
+      }}
+      title="Book Detail"
+      open={isModalOpen}
+      onOk={onOk}
+      onCancel={handleCancel}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 8,
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+          }}
+        >
+          Tiêu đề:
+        </p>
+        <input
+          style={{
+            border: '1px solid black',
+            paddingLeft: 8,
+            flex: 1,
+          }}
+          name="title"
+          value={value.title}
+          onChange={onChange}
+        />
       </div>
-    </div>
-  )
-  else return (<></>)
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 8,
+          alignItems: 'center',
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+          }}
+        >
+          Tác giả:
+        </p>
+        <input
+          style={{
+            border: '1px solid black',
+            paddingLeft: 8,
+            flex: 1,
+          }}
+          name="publisher"
+          value={value.publisher}
+          onChange={onChange}
+        />
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 8,
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Loại:
+        </p>
+        <select
+          onChange={onChange}
+          name="type"
+          style={{ flex: 1 }}
+          value={value.type}
+        >
+          <option value="None">None</option>
+          {type.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: 8,
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Thể loại:
+        </p>
+        <select
+          onChange={onChange}
+          name="category"
+          style={{ flex: 1 }}
+          value={value.category}
+        >
+          <option value="None">None</option>
+          {category.map((t) => (
+            <option key={t} value={t}>
+              {t}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 8,
+          alignItems: 'center',
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+          }}
+        >
+          Mô tả:
+        </p>
+        <textarea
+          style={{
+            border: '1px solid black',
+            paddingLeft: 8,
+            flex: 1,
+          }}
+          name="description"
+          value={value.description}
+          onChange={onChange}
+        />
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 8,
+          alignItems: 'center',
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 50,
+          }}
+        >
+          Ảnh:
+        </p>
+        <label
+          style={{
+            border: '1px solid black',
+            padding: '4px 8px',
+            borderRadius: 4,
+            background: '#2DD6E3',
+          }}
+        >
+          Upload Image
+          <input
+            type="file"
+            style={{
+              display: 'none',
+            }}
+            accept="image/*"
+            onChange={onChangeImage}
+          />
+        </label>
+      </div>
+      <div>
+        {value.image && (
+          <img
+            style={{
+              padding: 0,
+              width: '100%',
+              marginTop: 8,
+              height: 300,
+            }}
+            src={value.image}
+          />
+        )}
+      </div>
+    </Modal>
+  );
 }
 
 export default BookDetail;
+
+export const type = [
+  'Art',
+  'Language',
+  'Literature',
+  'Gymnastics',
+  'Physics',
+  'Chemistry',
+  'Biology',
+  'Math',
+  'History',
+];
+const category = ['Essays', 'Case Studies', 'Syllabus', 'Thesis'];

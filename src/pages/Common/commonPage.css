@@ -4,7 +4,8 @@
 }
 
 .main {
-  width: 60%;
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .close-filter {
@@ -12,10 +13,11 @@
 }
 
 .filter {
-  position: relative;
   width: 28%;
-  margin-left: 8%;
-  margin-top: 50px;
+  margin-left: 20px;
+  margin-top: 32px;
+  height: fit-content;
+  top: 100px;
 }
 
 .icon-search {
@@ -24,12 +26,11 @@
 
 .filter-box {
   width: 100%;
-  background: rgb(215, 212, 173);
+  background: rgba(96, 167, 136, 0.8);
   /* height: 600px; */
   height: max-content;
   border-radius: 10px;
   padding-bottom: 10px;
-  margin-bottom: 50px;
 }
 
 .filter-title {
@@ -41,7 +42,6 @@
 .filter-item {
   padding: 20px;
   width: 100%;
-  
   font-size: 16pt;
   font-weight: 500;
 }
@@ -76,6 +76,7 @@
   padding: 8px;
   border-radius: 5px;
   font-size: 12pt;
+  border: 1px solid rgb(238, 235, 55);
 }
 
 .minmax-input p {
@@ -93,6 +94,7 @@
   font-size: 14pt;
   border-radius: 8px;
   width: 100%;
+  border: 1px solid rgb(238, 235, 55);
 }
 
 .filter-box .line {
@@ -156,7 +158,8 @@
   padding: 10px;
 }
 
-.box-radio, .box-checkbox {
+.box-radio,
+.box-checkbox {
   display: flex;
   margin-left: 0;
 }
@@ -200,7 +203,8 @@
   padding: 10px 40px;
 }
 
-.wrap-button-filter button, .info-box button {
+.wrap-button-filter button,
+.info-box button {
   height: 50px;
   width: max-content;
   padding: 10px;
@@ -212,7 +216,6 @@
 
 .button-submit {
   background: rgb(84, 150, 215);
-  
   color: rgb(6, 12, 32);
 }
 
@@ -243,22 +246,23 @@
   .filter-box {
     position: fixed;
     right: 20px;
+    left: 20px;
     top: 130px;
-    width: 300px;
+    width: calc(100% - 40px);
+    z-index: 10;
     height: 80%;
     overflow-y: auto;
     overflow-x: hidden;
+    background: rgba(96, 167, 136);
   }
 
   .filter-box::-webkit-scrollbar {
     width: 6px;
   }
-  
   .filter-box::-webkit-scrollbar-thumb {
     background: rgba(161, 38, 139, 0.8);
     border-radius: 10px;
   }
-  
   .filter-box::-webkit-scrollbar-track {
     background-color: rgba(10, 11, 11, 0.4);
   }
@@ -272,7 +276,8 @@
     margin: 20px 10% 50px 10%;
   }
 
-  #name, #phone {
+  #name,
+  #phone {
     width: 50%;
     margin-left: 50%;
   }

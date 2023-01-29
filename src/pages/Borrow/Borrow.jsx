@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-// import {
-//   ControlOutlined
-// } from '@ant-design/icons'
 
-import MiniListBook from '../../components/Home/MiniListBook';
-import ListBook from '../../components/Home/ListBook';
+import ListBookBorrow from './ListBookBorrow';
 import { type } from '../../components/Home/BookDetail';
+import './borrow.css';
+import '../../pages/Common/commonPage.css'
 
-function Home(props) {
+function Borrow() {
+
+  const [filterCheck, setFilterCheck] = useState(false);
+
   const [filter, setFilter] = useState({
     title: '',
     publisher: '',
@@ -24,6 +25,7 @@ function Home(props) {
     setFilter({
       ...filterDraft,
     });
+    setFilterCheck(true);
   };
 
   const cancelFilter = () => {
@@ -34,6 +36,7 @@ function Home(props) {
     };
     setFilter(reNew);
     setFilterDraft(reNew);
+    setFilterCheck(false);
   };
 
   const setCheck = (e) => {
@@ -54,6 +57,11 @@ function Home(props) {
       [name]: value,
     });
   };
+
+  const handleContinue = ()=>{
+
+
+  }
 
   return (
     <div className="home">
@@ -111,10 +119,14 @@ function Home(props) {
         </div>
       </div>
       <div className="main">
-        <ListBook filter={filter} />
+        {!filterCheck &&
+        <div id="scroll-container">
+          <div id="scroll-text">Vui lòng tìm kiếm sách cần mượn để được mượn sách.</div>
+        </div>}
+        {filterCheck && <ListBookBorrow filter={filter} />}
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Borrow;
