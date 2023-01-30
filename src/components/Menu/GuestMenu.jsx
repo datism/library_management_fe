@@ -22,6 +22,11 @@ const menu = [
     text: 'Mượn sách',
     link: '/borrow',
   },
+  {
+    icon: <AccountBookOutlined />,
+    text: 'Trạng thái mượn sách',
+    link: '/status',
+  },
 ];
 
 function GuestMenu(props) {

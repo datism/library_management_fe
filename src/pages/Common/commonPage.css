@@ -113,7 +113,7 @@
 }
 
 .info-box {
-  background: rgb(233, 193, 233);
+  background: rgb(118, 247, 252);
   width: 80%;
   height: max-content;
   padding: 30px 5%;
@@ -154,8 +154,9 @@
   width: 65%;
   height: 50px;
   margin-left: 35%;
-  font-size: 12pt;
+  font-size: 16pt;
   padding: 10px;
+  color: blue;
 }
 
 .box-radio,

@@ -7,7 +7,7 @@ import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import CreateUser from '../../components/User/CreateUser';
 
-function User(props) {
+function Status(props) {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,6 +76,22 @@ function User(props) {
       key: 'phone',
       dataIndex: 'phone',
     },
+    {
+        title: 'Tên sách mượn',
+        key: 'borrow',
+        dataIndex: 'borrow',
+      },
+      {
+        title: 'Ngày mượn',
+        key: 'startDate',
+        dataIndex: 'startDate',
+      },
+      {
+        title: 'Ngày trả',
+        key: 'endDate',
+        dataIndex: 'startDate',
+      },
+
   ];
 
   const handleSearch = () => {
@@ -150,4 +166,4 @@ function User(props) {
   );
 }
 
-export default User;
+export default Status;

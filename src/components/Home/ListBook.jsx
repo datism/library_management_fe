@@ -79,7 +79,6 @@ function ListBook(props) {
   };
 
   const onCreateNewBook = () => {
-    console.log("Hi");
     setBookSelected(null);
     setIsModalOpen(true);
   };

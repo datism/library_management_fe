@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 import './pages.css'
 import logo from '../images/logo1.jpg'
-import { SERVER_ADDR } from '../api/serverAddr'
+import { BE_URL } from '../constant';
 
 function Register() {
   const genderList = ['Nam', 'Nữ', 'Khác'];
   //const navigate = useNavigate();
-  const [ gender, setGender ] = useState(-1);
-  const [ response, setResponse ] = useState('');
+  const [ gender, setGender ] = useState(null);
+  const [ response, setResponse ] = useState({});
 
   useEffect(() => {
     const role = localStorage.getItem('role');
@@ -89,20 +90,23 @@ function Register() {
 
   const handleSignUp = async () => {
     if (CheckValidate()) {
-      const data = await fetch(`${SERVER_ADDR}/library_be/index.php?controller=auth&action=signUp`, {
-        method: 'POST',
-        body: JSON.stringify({
-          username,
-          password,
-          email,
-          fullname,
-          gender,
-          phone
-        })
-      });
-
-      setResponse(await data.json());
+      const json = JSON.stringify({
+        name: username,
+        password: password
+      })
+      const customConfig = {
+        headers: {
+        'Content-Type': 'application/json'
+        }
+    };
+      console.log(json)
       document.getElementById('warning8').classList.remove('hidden');
+      setResponse({})
+      const data = await axios.post(`${BE_URL}/auth/signup`, json, customConfig);
+
+      console.log(data)
+      setResponse(data);
+      console.log(response)
     }
   }
 
@@ -178,7 +182,7 @@ function Register() {
           </div>
         </div>
         <button className='button-form button-blue' onClick={handleSignUp}>Đăng ký</button>
-        <p id='warning8' className='warning hidden' style={{fontSize: '15pt'}}>{typeof response === 'string' ? response : ''}</p>
+        <p id='warning8' className='warning hidden' style={{fontSize: '15pt'}}>{response.status === 200 ? "Inserted successfully" : 'Another account has already existed.'}</p>
       </div>
     </div>
   )

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { BE_URL } from '../../constant';
 
 import './subscriber.css'
 import '../../pages/Common/commonPage.css'
@@ -7,46 +9,26 @@ import '../../pages/Common/commonPage.css'
 const genderList = ['Nam', 'Nữ', 'Khác'];
 
 function Subscriber(props) {
-  const {booktitleid} = props;
+  const {copyID, user} = props;
   //const navigate = useNavigate();
   const [ gender, setGender ] = useState(null);
   const [response, setResponse] = useState();
 
   useEffect(() => {
 
+    console.log(props.booktitleid);
+
     document.addEventListener('keydown', handleEnter);
 
     return () => document.removeEventListener('keydown', handleEnter);
   }, []);
 
-  var name, phone, email, day;
+  var day;
 
   const CheckValidate = () => {
-    name = document.getElementById('name').value;
-    let warning = document.getElementById('warning1');
-    if (name) {
-      warning.classList.add('hidden');
-    } else warning.classList.remove('hidden');
-
-    phone = document.getElementById('phone').value;
-    warning = document.getElementById('warning2');
-    if (phone) {
-      warning.classList.add('hidden');
-    } else warning.classList.remove('hidden');
-
-    email = document.getElementById('email').value;
-    warning = document.getElementById('warning3');
-    if (email) {
-      warning.classList.add('hidden');
-    } else warning.classList.remove('hidden');
-
-    warning = document.getElementById('warning4');
-    if (gender) {
-      warning.classList.add('hidden');
-    } else warning.classList.remove('hidden');
 
     day = document.getElementById('day-input').value;
-    warning = document.getElementById('warning5');
+    let warning = document.getElementById('warning5');
     if (day) {
       warning.classList.add('hidden');
     } else warning.classList.remove('hidden');
@@ -55,20 +37,32 @@ function Subscriber(props) {
   const handleSubmit = async () => {
     document.querySelector('#warning6').classList.add('hidden');
     CheckValidate();
+    const endDate = new Date();
 
-    if (name && phone && email && day) {
+    if (day) {
+      endDate.setDate(endDate.getDate() + Number(day))
+      const json = JSON.stringify({
+        subscriber: user._id,
+        copy: copyID,
+        startDate: new Date(),
+        endDate: endDate,
+        status: "inProgress"
+      })
+      const customConfig = {
+        headers: {
+        'Content-Type': 'application/json'
+        }
+      };
       // subscriber API
 
-      const res = {
+      console.log(json)
+      document.getElementById('warning6').classList.remove('hidden');
+      setResponse({})
+      const data = await axios.post(`${BE_URL}/borrows`, json, customConfig);
 
-      };
-      setResponse(res);
-
-      if (typeof res === 'string') {
-        document.querySelector('#warning6').classList.remove('hidden');
-      } else {
-
-      }
+      console.log(data)
+      setResponse(data);
+      console.log(response)
     }
   };
 
@@ -85,43 +79,15 @@ function Subscriber(props) {
         <div className="box-title">Thông tin cơ bản</div>
         <div className="box-member">
           <div className="label">Họ và Tên: </div>
-          <input id="name" className="input-box" placeholder="Hãy nhập họ tên"/>
-          <p id="warning1" className="warning hidden">
-          Cần nhập họ và tên!!!
-          </p>
+          <p id="name" className="input-box">{user.name}</p>
         </div>
         <div className="box-member">
           <div className="label">Số điện thoại: </div>
-          <input type='number' id="phone" className="input-box" placeholder="Hãy nhập số điện thoại"/>
-          <p id="warning2" className="warning hidden">
-          Cần nhập số điện thoại!!!
-          </p>
+          <p type='number' id="phone" className="input-box">{user.phone}</p>
         </div>
         <div className="box-member">
           <div className="label">Email: </div>
-          <input id="email" className="input-box" placeholder="Hãy nhập địa chỉ Email"/>
-          <p id="warning3" className="warning hidden">
-          Cần nhập địa chỉ Email!!!
-          </p>
-        </div>
-        <div className="box-member gender">
-          <div className="label">Giới tính: </div>
-          <div id="gender" className="input-box">
-            {genderList.map((e, index) =>
-              <div key={index} className='box-radio'>
-                <input
-                  className={index ? 'input-radio' : 'input-radio first-radio'}
-                  type="radio"
-                  checked={index === gender}
-                  onChange={() => setGender(index)}
-                />
-                <p>{e}</p>
-              </div>
-            )}
-          </div>
-          <p id="warning4" className="warning hidden">
-              Cần chọn giới tính!!!
-          </p>
+          <p id="email" className="input-box">{user.email}</p>
         </div>
         <div className="box-member">
           <div className="label">Ngày mượn: </div>
@@ -130,7 +96,7 @@ function Subscriber(props) {
           </p>
         </div>
         <div className="box-member">
-          <div className="label">Ngày trả: </div>
+          <div className="label">Chọn số ngày mượn: </div>
           <select id="day-input" className="input-box" defaultValue={""}>
                 <option value="" disabled hidden>Số ngày mượn</option>
                 <option value="1">1</option>
@@ -148,7 +114,7 @@ function Subscriber(props) {
                 <option value="13">13</option>
                 <option value="14">14</option>
           </select>
-          <p id="warning5" className="warning hidden">Cần chọn số ngày</p>
+          <p id="warning5" className="warning hidden">Cần chọn số ngày!!!</p>
           <p id="warning6" className="warning hidden">
             {typeof response === 'string' ? response : ''}
           </p>

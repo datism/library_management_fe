@@ -1,49 +1,56 @@
-#scroll-container {
-  border: 3px solid black;
-  border-radius: 5px;
-  overflow: hidden;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  color: cyan;
-  font-size: 16pt;
-  top: 50%;
+
+.main {
+  position: relative;
+}
+.continue-page {
+  height: auto;
+  font-size: 12pt;
+  padding: 6px 15px;
   position:relative;
-  background: url('/public/images/login_layout.jpeg') no-repeat;
 }
 
-#scroll-text {
-  /* animation properties */
-  -moz-transform: translateX(100%);
-  -webkit-transform: translateX(100%);
-  transform: translateX(100%);
-
-  -moz-animation: my-animation 15s linear infinite;
-  -webkit-animation: my-animation 15s linear infinite;
-  animation: my-animation 15s linear infinite;
+.button-page button:hover {
+  color: rgb(18, 62, 167);
+  background: white;
 }
 
-/* for Firefox */
-@-moz-keyframes my-animation {
-  from { -moz-transform: translateX(100%); }
-  to { -moz-transform: translateX(-100%); }
+.button-page button:active {
+  background: rgb(18, 62, 167);
+  color: white;
 }
 
-/* for Chrome */
-@-webkit-keyframes my-animation {
-  from { -webkit-transform: translateX(100%); }
-  to { -webkit-transform: translateX(-100%); }
+.button-page button {
+  height: 50px;
+  width: max-content;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 14pt;
+  border: 3px solid rgb(18, 62, 167);
+  color: rgb(18, 62, 167);
+  position: absolute;
+  right: 50%;
 }
 
-@keyframes my-animation {
-  from {
-    -moz-transform: translateX(100%);
-    -webkit-transform: translateX(100%);
-    transform: translateX(100%);
-  }
-  to {
-    -moz-transform: translateX(-100%);
-    -webkit-transform: translateX(-100%);
-    transform: translateX(-100%);
-  }
+.borrow-item {
+  position: absolute;
+  width: 55%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  align-items: center;
+  right: 3%;
+  bottom: 20px;
 }
+
+.borrow-item input {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 0;
+}
+
+
+
+
+
+
