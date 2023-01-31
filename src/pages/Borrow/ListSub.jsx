@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import CreateUser from '../../components/User/CreateUser';
 import './ListSub.css'
 import Subscriber from './Subscriber';
 

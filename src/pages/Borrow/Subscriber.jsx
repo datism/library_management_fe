@@ -35,7 +35,7 @@ function Subscriber(props) {
   };
 
   const handleSubmit = async () => {
-    document.querySelector('#warning6').classList.add('hidden');
+    //document.querySelector('#warning6').classList.add('hidden');
     CheckValidate();
     const endDate = new Date();
 
@@ -56,13 +56,13 @@ function Subscriber(props) {
       // subscriber API
 
       console.log(json)
-      document.getElementById('warning6').classList.remove('hidden');
+      //document.getElementById('warning6').classList.remove('hidden');
       setResponse({})
       const data = await axios.post(`${BE_URL}/borrows`, json, customConfig);
 
       console.log(data)
       setResponse(data);
-      console.log(response)
+      alert("Thành công");
     }
   };
 
@@ -115,9 +115,6 @@ function Subscriber(props) {
                 <option value="14">14</option>
           </select>
           <p id="warning5" className="warning hidden">Cần chọn số ngày!!!</p>
-          <p id="warning6" className="warning hidden">
-            {typeof response === 'string' ? response : ''}
-          </p>
         </div>
         <button className="button-submit" onClick={handleSubmit}>Mượn ngay</button>
       </div>

@@ -66,38 +66,33 @@ function Borrow(props) {
 
   const handleSearch = () => {
     setCopyID(document.getElementById('search-box').value);
-    handleGetBookID(copyID);
   }
 
-  const handleGetBookID = async(copyID)=> {
-    let res = {};
-    try {
-      console.log(copyID)
-      res = await axios.get(`${BE_URL}/copies/${copyID}`)
-      console.log(res)
-      setBookID(res.data.book);
-      requestBookDetail()
-    } catch (e) {
-      console.log(e);
-      alert("Mã sách không đúng");
-    }
-  };
 
-  const requestBookDetail = async() => {
-    let res = {};
-    try {
-      console.log(bookID)
-      res = await axios.get(`${BE_URL}/books/${bookID}`);
-      console.log(res)
-      setBookDetail(
-        [res.data]
-      )
-      setBookChecked(true);
-    } catch (e) {
-      console.log(e)
-      alert("Sách không tồn tại vui lòng nhập lại");
-    }
-  }
+  useEffect(() => {
+    fetch(`${BE_URL}/copies/${copyID}`)
+       .then((response) => response.json())
+       .then((res) => {
+          console.log(res);
+          setBookID(res.book);
+       })
+       .catch((err) => {
+          console.log(err.message);
+       });
+ }, [copyID]);
+
+ useEffect(() => {
+  fetch(`${BE_URL}/books/${bookID}`)
+     .then((response) => response.json())
+     .then((res) => {
+        console.log(res);
+        setBookDetail([res]);
+        setBookChecked(true);
+        if (res.errorMessage === "Validation Error") setBookChecked(false);
+     })
+     .catch((err) => {
+     });
+}, [bookID]);
 
 
   return (
@@ -154,18 +149,21 @@ function Borrow(props) {
       </div>:
         <ListSub copyID = {copyID}/>
     }
-      <div className='continue-page button-page'>
-          {!continuePage && bookChecked && <button className='continue-page-button' onClick={handleContinue}>
+      {bookChecked === true && 
+      <>
+        <div className='continue-page button-page'>
+          {!continuePage && <button className='continue-page-button' onClick={handleContinue}>
                 <p>Continue</p>
             </button>
           }
         </div>
         <div className='continue-page button-page'>
-          {continuePage && bookChecked && <button className='continue-page-button' onClick={handleBack}>
+          {continuePage && <button className='continue-page-button' onClick={handleBack}>
                 <p>Back</p>
             </button>
           }
         </div>
+      </>}
     </>
 
 

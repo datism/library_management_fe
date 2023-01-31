@@ -5,27 +5,25 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import CreateUser from '../../components/User/CreateUser';
+import SubInfo from './SubInfo';
 
 function Status(props) {
-  const [users, setUsers] = useState([]);
+  const [borrows, setBorrows] = useState([]);
+  const [subscriber, setSubscriber] = useState([]);
   const [name, setName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [currentPage, setPage] = useState(1);
 
-  const showModal = (e) => {
+  const showModal = () => {
+    console.log("Hi")
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    requestUser();
+  const handleOk = () => {;
     setIsModalOpen(false);
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   const requestUser = async () => {
     const params = {
@@ -35,17 +33,16 @@ function Status(props) {
     if (name) {
       params.name = name;
     }
-    const res = await axios.get(`${BE_URL}/subscribers`, {
+    const res = await axios.get(`${BE_URL}/borrows`, {
       params,
     });
     console.log(res)
-    setUsers(
-      res.data.items.map((r, i) => ({
+    setBorrows(
+      res.data.map((r, i) => ({
         ...r,
         index: i + 1,
       })),
     );
-    console.log(users)
 
     setTotal(res.data.totalItems);
   };
@@ -62,25 +59,15 @@ function Status(props) {
       render: (text) => <p>{text}</p>,
     },
     {
-      title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
+      title: 'SubsriberID',
+      dataIndex: 'subscriber',
+      key: 'subscriber',
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'Mã sách',
+      dataIndex: 'copy',
+      key: 'copy',
     },
-    {
-      title: 'Số điện thoại',
-      key: 'phone',
-      dataIndex: 'phone',
-    },
-    {
-        title: 'Tên sách mượn',
-        key: 'borrow',
-        dataIndex: 'borrow',
-      },
       {
         title: 'Ngày mượn',
         key: 'startDate',
@@ -89,8 +76,28 @@ function Status(props) {
       {
         title: 'Ngày trả',
         key: 'endDate',
-        dataIndex: 'startDate',
+        dataIndex: 'endDate',
       },
+      {
+        title: 'Trạng thái',
+        key: 'status',
+        dataIndex: 'status',
+      },
+      {
+        title: 'Thông tin chi tiết',
+        key: 'subinfo',
+        dataIndex: 'subinfo',
+        render: (text, record, index) => {
+          return (
+              <button
+                id={record.id}
+                onClick={e => hanleShowInfo(record)}
+       //record is the row data    
+              >Xem</button>
+          );
+        }
+      },
+      
 
   ];
 
@@ -101,9 +108,18 @@ function Status(props) {
   const onChangePage = (e) => {
     setPage(e);
   };
-  const onCreateNewUser = () => {
+
+  const hanleShowInfo = (record) =>{
+    api(record);
+  }
+
+  const api = async(record)=>{
+    const res =await axios.get(`${BE_URL}/subscribers/${record.subscriber}`);
+    setSubscriber(await res.data);
     showModal();
-  };
+    console.log(subscriber);
+  }
+  
 
   return (
     <div
@@ -120,7 +136,7 @@ function Status(props) {
           color: 'white',
         }}
       >
-        User Management
+        Status Borrow
       </p>
       <div className="search-box">
         <input
@@ -131,14 +147,6 @@ function Status(props) {
         ></input>
         <button className="btn-search" onClick={handleSearch}>
           <SearchOutlined className="icon-search" />
-        </button>
-        <button
-          style={{
-            padding: '0px 8px',
-          }}
-          onClick={onCreateNewUser}
-        >
-          Thêm người dùng
         </button>
       </div>
 
@@ -155,12 +163,13 @@ function Status(props) {
             flexDirection: 'row',
           },
         }}
-        dataSource={users}
+        dataSource={borrows}
+        
       />
-      <CreateUser
+      <SubInfo
         isModalOpen={isModalOpen}
         handleOk={handleOk}
-        handleCancel={handleCancel}
+        subinfo={subscriber}
       />
     </div>
   );
