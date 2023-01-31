@@ -104,7 +104,7 @@ function User(props) {
           color: 'white',
         }}
       >
-        User Management
+        Quản lý người đọc
       </p>
       <div className="search-box">
         <input

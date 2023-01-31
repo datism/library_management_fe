@@ -10,7 +10,7 @@ import SubInfo from './SubInfo';
 function Status(props) {
   const [borrows, setBorrows] = useState([]);
   const [subscriber, setSubscriber] = useState([]);
-  const [name, setName] = useState('');
+  const [status, setStatus] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [currentPage, setPage] = useState(1);
@@ -30,8 +30,8 @@ function Status(props) {
       currentPage,
       itemsPerPage: 10,
     };
-    if (name) {
-      params.name = name;
+    if (status) {
+      params.status = status;
     }
     const res = await axios.get(`${BE_URL}/borrows`, {
       params,
@@ -49,7 +49,7 @@ function Status(props) {
 
   useEffect(() => {
     requestUser();
-  }, [currentPage, name]);
+  }, [currentPage, status]);
 
   const columns = [
     {
@@ -103,7 +103,7 @@ function Status(props) {
 
   const handleSearch = () => {
     const input = document.getElementById('search-box').value;
-    setName(input);
+    setStatus(input);
   };
   const onChangePage = (e) => {
     setPage(e);
@@ -136,7 +136,7 @@ function Status(props) {
           color: 'white',
         }}
       >
-        Status Borrow
+        Tình trạng mượn sách
       </p>
       <div className="search-box">
         <input
