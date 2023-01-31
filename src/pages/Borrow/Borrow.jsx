@@ -79,7 +79,7 @@ function Borrow(props) {
        .catch((err) => {
           console.log(err.message);
        });
- }, [copyID]);
+ }, [copyID, bookChecked]);
 
  useEffect(() => {
   fetch(`${BE_URL}/books/${bookID}`)
@@ -92,7 +92,7 @@ function Borrow(props) {
      })
      .catch((err) => {
      });
-}, [bookID]);
+}, [bookID, bookChecked]);
 
 
   return (
