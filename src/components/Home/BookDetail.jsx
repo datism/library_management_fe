@@ -9,6 +9,7 @@ import { arrayBufferToBase64 } from '../../helpers';
 function BookDetail(props) {
   const { isModalOpen, handleOk, handleCancel, book, bookID } = props;
   const [value, setValue] = useState({});
+  const [date, setDate] = useState("");
 
   useEffect(() => {
     if (!bookID) {
@@ -20,6 +21,8 @@ function BookDetail(props) {
         image: null,
         cover: null,
         category: '',
+        author: '',
+        publisherDate: '',
       });
       return;
     }
@@ -30,10 +33,12 @@ function BookDetail(props) {
       description: book.description,
       publisher: book.publisher,
       type: book.type,
+      author: book.author,
       image:
         'data:image/jpeg;base64,' + arrayBufferToBase64(book.cover.image.data),
       cover: null,
       category: book.category,
+      publisherDate: book.publisherDate
     });
   }, [bookID]);
 
@@ -56,7 +61,24 @@ function BookDetail(props) {
     });
   };
 
+  // const onChangePublisherDate = (e) => {
+  //   const value1 = e.target.value;
+  //   console.log(value1)
+  //   //setDate(...value);
+  // }
+
   const onOk = async () => {
+    //console.log(value);
+    const updatevalue = new Date(value.publisherDate);
+    // setValue(current => {
+    //   // 👇️ remove the salary key from an object
+    //   const {publisherDate, ...rest} = current;
+
+    //   return rest;
+    // });
+    console.log(updatevalue)
+    value.publisherDate = updatevalue;
+    console.log(value)
     let check = true;
     Object.keys(value).forEach((e) => {
       if (!bookID) {
@@ -85,6 +107,7 @@ function BookDetail(props) {
         'content-type': 'multipart/form-data',
       },
     };
+    console.log(formData);
     if (bookID) {
       await axios.put(`${BE_URL}/books/${book._id}`, formData, config);
     } else {
@@ -100,7 +123,7 @@ function BookDetail(props) {
         width: 100,
       }}
       title="Book Detail"
-      open={isModalOpen}
+      visible={isModalOpen}
       onOk={onOk}
       onCancel={handleCancel}
     >
@@ -153,11 +176,68 @@ function BookDetail(props) {
             paddingLeft: 8,
             flex: 1,
           }}
+          name="author"
+          value={value.author}
+          onChange={onChange}
+        />
+      </div>
+
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 8,
+          alignItems: 'center',
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 55,
+          }}
+        >
+          Nhà xuất bản:
+        </p>
+        <input
+          style={{
+            border: '1px solid black',
+            paddingLeft: 8,
+            flex: 1,
+          }}
           name="publisher"
           value={value.publisher}
           onChange={onChange}
         />
       </div>
+
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 8,
+          alignItems: 'center',
+        }}
+      >
+        <p
+          style={{
+            marginRight: 16,
+            marginBottom: 0,
+            width: 55,
+          }}
+        >
+          Ngày xuất bản:
+        </p>
+        <input
+          style={{
+            border: '1px solid black',
+            paddingLeft: 8,
+            flex: 1,
+          }}
+          name="publisherDate"
+          value={value.publisherDate}
+          onChange={onChange}
+        />
+      </div>
+
 
       <div
         style={{

@@ -54,7 +54,7 @@ function Status(props) {
       itemsPerPage: 10,
     };
     if (status) {
-      params.status = status;
+      params.subscriber = status;
     }
     const res = await axios.get(`${BE_URL}/borrows`, {
       params,
@@ -115,7 +115,7 @@ function Status(props) {
               <button
                 id={record.id}
                 onClick={e => hanleShowInfo(record)}
-       //record is the row data    
+       //record is the row data
               >Xem</button>
           );
         }
@@ -129,12 +129,12 @@ function Status(props) {
               <button
                 id={record.id}
                 onClick={e => handleUpdateInfo(record)}
-       //record is the row data    
+       //record is the row data
               >Cập nhật</button>
           );
         }
       }
-      
+
 
   ];
 
@@ -162,7 +162,7 @@ function Status(props) {
     setBorrowID(record._id);
   }
 
-  
+
 
   return (
     <div
@@ -188,7 +188,7 @@ function Status(props) {
           id="search-box"
           //   onChange={handleEnter}
         ></input>
-        <button className="btn-search" onClick={onUpdateStatus}>
+        <button className="btn-search" onClick={handleSearch}>
           <SearchOutlined className="icon-search" />
         </button>
       </div>
@@ -207,7 +207,7 @@ function Status(props) {
           },
         }}
         dataSource={borrows}
-        
+
       />
       <SubInfo
         isModalOpen={isModalOpen}
@@ -215,7 +215,7 @@ function Status(props) {
         subinfo={subscriber}
       />
 
-      <UpdateStatus 
+      <UpdateStatus
         updateModalOpen = {updateModalOpen}
         handleUpdateOk = {handleUpdateOk}
         handleUpdateCancel = {handleUpdateCancel}
