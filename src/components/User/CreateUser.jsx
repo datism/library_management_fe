@@ -45,7 +45,7 @@ function CreateUser(props) {
         width: 200,
       }}
       title="Tạo người dùng"
-      open={isModalOpen}
+      visible={isModalOpen}
       onOk={onOk}
       onCancel={handleCancel}
     >
