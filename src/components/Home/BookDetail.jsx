@@ -100,7 +100,7 @@ function BookDetail(props) {
         width: 100,
       }}
       title="Book Detail"
-      open={isModalOpen}
+      visible={isModalOpen}
       onOk={onOk}
       onCancel={handleCancel}
     >

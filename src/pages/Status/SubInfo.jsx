@@ -28,7 +28,7 @@ function SubInfo(props) {
         width: 200,
       }}
       title="Thông tin người mượn"
-      open={isModalOpen}
+      visible={isModalOpen}
       onOk={onOk}
       //onCancel={handleCancel}
     >
