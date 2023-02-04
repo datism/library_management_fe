@@ -13,10 +13,10 @@ import ListSub from './ListSub';
 
 function Borrow(props) {
   const [bookDetail, setBookDetail] = useState([]);
-  const [bookID, setBookID] = useState('');
+  const [bookID, setBookID] = useState(null);
   const [continuePage, setContinuePage] = useState(false);
   const [bookChecked, setBookChecked] = useState(false);
-  const [copyID, setCopyID] = useState();
+  const [copyID, setCopyID] = useState(null);
 
   const handleContinue = () => {
     setContinuePage(true);
@@ -65,34 +65,44 @@ function Borrow(props) {
   ];
 
   const handleSearch = () => {
-    setCopyID(document.getElementById('search-box').value);
+    const value = document.getElementById('search-box').value
+    console.log(value);
+    setCopyID(value);
   }
 
 
   useEffect(() => {
+    console.log(copyID)
+    if (copyID !== null && copyID !== '')
     fetch(`${BE_URL}/copies/${copyID}`)
        .then((response) => response.json())
        .then((res) => {
           console.log(res);
-          setBookID(res.book);
+          if (res.errorCode === 40000) {
+            setBookChecked(false);
+            setBookDetail([]);
+            setCopyID(null);
+            setBookID(null);
+          }
+          else setBookID(res.book);
        })
        .catch((err) => {
           console.log(err.message);
        });
- }, [copyID, bookChecked]);
+ }, [copyID]);
 
  useEffect(() => {
+  if (bookID !== null && copyID !== null)
   fetch(`${BE_URL}/books/${bookID}`)
      .then((response) => response.json())
      .then((res) => {
         console.log(res);
         setBookDetail([res]);
         setBookChecked(true);
-        if (res.errorMessage === "Validation Error") setBookChecked(false);
      })
      .catch((err) => {
      });
-}, [bookID, bookChecked]);
+}, [bookID]);
 
 
   return (
@@ -149,7 +159,7 @@ function Borrow(props) {
       </div>:
         <ListSub copyID = {copyID}/>
     }
-      {bookChecked === true && 
+      {bookChecked === true &&
       <>
         <div className='continue-page button-page'>
           {!continuePage && <button className='continue-page-button' onClick={handleContinue}>

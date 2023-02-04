@@ -54,7 +54,7 @@ function Login() {
   };
 
   const handleSignup = () => {
-    navigate('/register');
+    navigate('/signup');
   };
 
   const handleEnter = (e) => {

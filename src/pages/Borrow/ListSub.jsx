@@ -43,7 +43,7 @@ function ListSub(props) {
     const res = await axios.get(`${BE_URL}/subscribers`, {
       params,
     });
-    console.log(res)
+    console.log(params)
     setUsers(
       res.data.items.map((r, i) => ({
         ...r,

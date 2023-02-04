@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import SubInfo from './SubInfo';
+import UpdateStatus from './UpdateStatus';
 
 function Status(props) {
   const [borrows, setBorrows] = useState([]);
@@ -14,6 +15,10 @@ function Status(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [total, setTotal] = useState(0);
   const [currentPage, setPage] = useState(1);
+  const [borrowID, setBorrowID] = useState(0);
+
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
 
   const showModal = () => {
     console.log("Hi")
@@ -24,6 +29,24 @@ function Status(props) {
     setIsModalOpen(false);
   };
 
+  const showUpdateModal = ()=>{
+    setUpdateModalOpen(true);
+  }
+
+  const handleUpdateOk = () => {
+    requestUser();
+    setUpdateModalOpen(false);
+  }
+
+  const handleUpdateCancel = () => {
+    setUpdateModalOpen(false);
+  }
+
+  const onUpdateStatus = () =>{
+    showUpdateModal();
+  }
+
+
 
   const requestUser = async () => {
     const params = {
@@ -31,12 +54,16 @@ function Status(props) {
       itemsPerPage: 10,
     };
     if (status) {
+<<<<<<< HEAD
       params.status = status;
+=======
+      params.subscriber = status;
+>>>>>>> ducerick
     }
     const res = await axios.get(`${BE_URL}/borrows`, {
       params,
     });
-    console.log(res)
+    console.log(params)
     setBorrows(
       res.data.map((r, i) => ({
         ...r,
@@ -92,12 +119,26 @@ function Status(props) {
               <button
                 id={record.id}
                 onClick={e => hanleShowInfo(record)}
-       //record is the row data    
+       //record is the row data
               >Xem</button>
           );
         }
       },
-      
+      {
+        title: 'Cập nhật trạng thái',
+        key: 'updateinfo',
+        dataIndex: 'updateinfo',
+        render: (text, record, index) => {
+          return (
+              <button
+                id={record.id}
+                onClick={e => handleUpdateInfo(record)}
+       //record is the row data
+              >Cập nhật</button>
+          );
+        }
+      }
+
 
   ];
 
@@ -119,7 +160,13 @@ function Status(props) {
     showModal();
     console.log(subscriber);
   }
-  
+
+  const handleUpdateInfo = (record) =>{
+    showUpdateModal();
+    setBorrowID(record._id);
+  }
+
+
 
   return (
     <div
@@ -164,12 +211,19 @@ function Status(props) {
           },
         }}
         dataSource={borrows}
-        
+
       />
       <SubInfo
         isModalOpen={isModalOpen}
         handleOk={handleOk}
         subinfo={subscriber}
+      />
+
+      <UpdateStatus
+        updateModalOpen = {updateModalOpen}
+        handleUpdateOk = {handleUpdateOk}
+        handleUpdateCancel = {handleUpdateCancel}
+        borrowID = {borrowID}
       />
     </div>
   );
