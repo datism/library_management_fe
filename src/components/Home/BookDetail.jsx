@@ -22,7 +22,7 @@ function BookDetail(props) {
         cover: null,
         category: '',
         author: '',
-        publisherDate: '',
+        //publisherDate: '',
       });
       return;
     }
@@ -38,7 +38,7 @@ function BookDetail(props) {
         'data:image/jpeg;base64,' + arrayBufferToBase64(book.cover.image.data),
       cover: null,
       category: book.category,
-      publisherDate: book.publisherDate
+      //publisherDate: book.publisherDate
     });
   }, [bookID]);
 
@@ -69,15 +69,15 @@ function BookDetail(props) {
 
   const onOk = async () => {
     //console.log(value);
-    const updatevalue = new Date(value.publisherDate);
+    //const updatevalue = new Date(value.publisherDate);
     // setValue(current => {
     //   // 👇️ remove the salary key from an object
     //   const {publisherDate, ...rest} = current;
 
     //   return rest;
     // });
-    console.log(updatevalue)
-    value.publisherDate = updatevalue;
+    console.log(value)
+    //value.publisherDate = updatevalue;
     console.log(value)
     let check = true;
     Object.keys(value).forEach((e) => {
@@ -108,6 +108,7 @@ function BookDetail(props) {
       },
     };
     console.log(formData);
+    console.log(bookID)
     if (bookID) {
       await axios.put(`${BE_URL}/books/${book._id}`, formData, config);
     } else {
@@ -233,7 +234,7 @@ function BookDetail(props) {
             flex: 1,
           }}
           name="publisherDate"
-          value={value.publisherDate}
+          //value={value.publisherDate}
           onChange={onChange}
         />
       </div>
