@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
-import { arrayBufferToBase64, openNotification } from '../../helpers';
+import { openNotification } from '../../helpers';
 import { Context } from '../../App';
 
 function BookDetail(props) {

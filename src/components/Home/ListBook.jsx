@@ -46,10 +46,7 @@ function ListBook(props) {
     fetchData();
   }, [props.filter, pageNum]);
 
-  const handleSeeDetail = (e) => {
-    // document.getElementById('detail').classList.remove('hidden');
-    // setBookID(e.currentTarget.attributes.bookid.nodeValue);
-  };
+  const handleSeeDetail = (e) => showModal(e)
 
   const handleChoosePage = (p) => {
     setPageNum(p);
@@ -85,20 +82,18 @@ function ListBook(props) {
 
   return (
     <div className="wrap-list">
-      <div className="title-list"></div>
       <div className="content-list">
         {bookList.map((e, index) => (
           <div
             key={index}
             className="wrap-item"
-            onClick={handleSeeDetail}
+            onClick={() => {
+              handleSeeDetail(e);
+            }}
             bookid={e.booktitleid}
           >
             <BookItem
               book={e}
-              onShowDetail={() => {
-                showModal(e);
-              }}
             />
           </div>
         ))}

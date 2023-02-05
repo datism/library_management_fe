@@ -4,7 +4,6 @@ import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
-import { arrayBufferToBase64 } from '../../helpers';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 

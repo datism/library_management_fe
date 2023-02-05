@@ -2,30 +2,27 @@
   /* position: fixed; */
   top: 0px;
   /* background: url(../images/public_layout.jpg) no-repeat; */
-  background: rgb(15, 2, 36);
+  background: #EEEEEE;
   background-size: cover;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
-  position: fixed;
   z-index: 1;
-  top: 0;
-  padding: 0px;
-  line-height: 0px;
-  background: rgb(230, 189, 156);
+  line-height: 0;
   width: 100%;
   align-items: center;
   justify-content: center;
+  flex-grow: 1;
+  background-color: white;
 }
 
 .content {
-  padding-top: 60px;
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin-left: 16px;
+  flex-grow: 99999999;
 }
 
 .content::-webkit-scrollbar {

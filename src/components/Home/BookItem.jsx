@@ -1,9 +1,8 @@
 import './home.css';
 import { Card } from 'antd';
-import { arrayBufferToBase64 } from '../../helpers';
 
 function BookItem(props) {
-  const { onShowDetail, book } = props;
+  const { onShowDetail, book } = props
   return (
     <Card
       hoverable
@@ -11,16 +10,18 @@ function BookItem(props) {
         width: '100%',
         background: 'white',
         cursor: 'pointer',
-        padding: 0,
+        borderRadius: 15,
+        marginTop: 10,
+
       }}
       cover={
         <img
           alt="example"
           style={{
+            borderRadius: '15px 15px 0px 0px',
             width: '100%',
             padding: '0px',
-            height: 200,
-            objectFit: 'cover',
+            height: 300,
           }}
           src={book.cover}
           onClick={onShowDetail}
@@ -40,6 +41,7 @@ function BookItem(props) {
             fontSize: 18,
             fontWeight: 600,
             marginBottom: 8,
+              backgroundColor:"red",
           }}
         >
           {book.title}
@@ -54,15 +56,15 @@ function BookItem(props) {
         >
           {book.type}
         </p>
-        <p
-          style={{
-            fontSize: 16,
-            fontWeight: 500,
-            marginBottom: 8,
-          }}
-        >
-          {book.publisher}
-        </p>
+        {/*<p*/}
+        {/*  style={{*/}
+        {/*    fontSize: 16,*/}
+        {/*    fontWeight: 500,*/}
+        {/*    marginBottom: 8,*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  {book.publisher}*/}
+        {/*</p>*/}
       </div>
     </Card>
   );

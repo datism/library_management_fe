@@ -173,10 +173,9 @@ function Status(props) {
           textAlign: 'center',
           fontSize: 28,
           fontWeight: 600,
-          color: 'white',
         }}
       >
-        Tình trạng mượn sách
+        Lịch sử mượn sách
       </p>
       <div className="search-box">
         <input
