@@ -101,7 +101,6 @@ function User(props) {
           textAlign: 'center',
           fontSize: 28,
           fontWeight: 600,
-          color: 'white',
         }}
       >
         Quản lý người đọc
