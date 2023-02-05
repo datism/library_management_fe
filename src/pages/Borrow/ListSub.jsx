@@ -5,12 +5,11 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
-import './ListSub.css'
+import './ListSub.css';
 import Subscriber from './Subscriber';
 
 function ListSub(props) {
-
-  const {copyID} = props;
+  const { copyID } = props;
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,14 +42,14 @@ function ListSub(props) {
     const res = await axios.get(`${BE_URL}/subscribers`, {
       params,
     });
-    console.log(params)
+    console.log(params);
     setUsers(
       res.data.items.map((r, i) => ({
         ...r,
         index: i + 1,
       })),
     );
-    console.log(users)
+    console.log(users);
 
     setTotal(res.data.totalItems);
   };
@@ -83,10 +82,10 @@ function ListSub(props) {
     },
   ];
 
-  const handleChooseSub = (id)=> {
+  const handleChooseSub = (id) => {
     setRowID(id);
     setSelectedSub(true);
-  }
+  };
 
   const handleSearch = () => {
     const input = document.getElementById('search-box').value;
@@ -101,58 +100,61 @@ function ListSub(props) {
 
   return (
     <>
-        {selectedSub === false ?
-            <div
+      {selectedSub === false ? (
+        <div
+          style={{
+            marginTop: 40,
+          }}
+        >
+          <p
             style={{
-              marginTop: 40,
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 28,
+              fontWeight: 600,
+              color: 'white',
             }}
           >
-            <p
-              style={{
-                width: '100%',
-                textAlign: 'center',
-                fontSize: 28,
-                fontWeight: 600,
-                color: 'white',
-              }}
-            >
-              Choose Subscriber
-            </p>
-            <div className="search-box">
-              <input
-                className="input-search"
-                placeholder="Tìm kiếm"
-                id="search-box"
-                //   onChange={handleEnter}
-              ></input>
-              <button className="btn-search" onClick={handleSearch}>
-                <SearchOutlined className="icon-search" />
-              </button>
-            </div>
+            Choose Subscriber
+          </p>
+          <div className="search-box">
+            <input
+              className="input-search"
+              placeholder="Tìm kiếm"
+              id="search-box"
+              //   onChange={handleEnter}
+            ></input>
+            <button className="btn-search" onClick={handleSearch}>
+              <SearchOutlined className="icon-search" />
+            </button>
+          </div>
 
-            <Table
-              columns={columns}
-              rowKey="index"
-              pagination={{
-                pageSize: 10,
-                total,
-                onChange: onChangePage,
-                showSizeChanger: false,
-                style: {
-                  display: 'flex',
-                  flexDirection: 'row',
-                },
-              }}
-              dataSource={users}
-              onRow={(record, rowIndex) => {
-                  return {
-                    onClick: event => {handleChooseSub(rowIndex)}, // click row
-                  };
-                }}
-            />
-          </div>:
-            <Subscriber copyID = {copyID} user = {users[rowID]}/>
-    }
+          <Table
+            columns={columns}
+            rowKey="index"
+            pagination={{
+              pageSize: 10,
+              total,
+              onChange: onChangePage,
+              showSizeChanger: false,
+              style: {
+                display: 'flex',
+                flexDirection: 'row',
+              },
+            }}
+            dataSource={users}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: (event) => {
+                  handleChooseSub(rowIndex);
+                }, // click row
+              };
+            }}
+          />
+        </div>
+      ) : (
+        <Subscriber copyID={copyID} user={users[rowID]} />
+      )}
     </>
   );
 }

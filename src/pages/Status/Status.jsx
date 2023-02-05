@@ -19,34 +19,31 @@ function Status(props) {
 
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
 
-
   const showModal = () => {
-    console.log("Hi")
+    console.log('Hi');
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {;
+  const handleOk = () => {
     setIsModalOpen(false);
   };
 
-  const showUpdateModal = ()=>{
+  const showUpdateModal = () => {
     setUpdateModalOpen(true);
-  }
+  };
 
   const handleUpdateOk = () => {
     requestUser();
     setUpdateModalOpen(false);
-  }
+  };
 
   const handleUpdateCancel = () => {
     setUpdateModalOpen(false);
-  }
+  };
 
-  const onUpdateStatus = () =>{
+  const onUpdateStatus = () => {
     showUpdateModal();
-  }
-
-
+  };
 
   const requestUser = async () => {
     const params = {
@@ -54,16 +51,12 @@ function Status(props) {
       itemsPerPage: 10,
     };
     if (status) {
-<<<<<<< HEAD
-      params.status = status;
-=======
       params.subscriber = status;
->>>>>>> ducerick
     }
     const res = await axios.get(`${BE_URL}/borrows`, {
       params,
     });
-    console.log(params)
+    console.log(params);
     setBorrows(
       res.data.map((r, i) => ({
         ...r,
@@ -95,51 +88,53 @@ function Status(props) {
       dataIndex: 'copy',
       key: 'copy',
     },
-      {
-        title: 'Ngày mượn',
-        key: 'startDate',
-        dataIndex: 'startDate',
+    {
+      title: 'Ngày mượn',
+      key: 'startDate',
+      dataIndex: 'startDate',
+    },
+    {
+      title: 'Ngày trả',
+      key: 'endDate',
+      dataIndex: 'endDate',
+    },
+    {
+      title: 'Trạng thái',
+      key: 'status',
+      dataIndex: 'status',
+    },
+    {
+      title: 'Thông tin chi tiết',
+      key: 'subinfo',
+      dataIndex: 'subinfo',
+      render: (text, record, index) => {
+        return (
+          <button
+            id={record.id}
+            onClick={(e) => hanleShowInfo(record)}
+            //record is the row data
+          >
+            Xem
+          </button>
+        );
       },
-      {
-        title: 'Ngày trả',
-        key: 'endDate',
-        dataIndex: 'endDate',
+    },
+    {
+      title: 'Cập nhật trạng thái',
+      key: 'updateinfo',
+      dataIndex: 'updateinfo',
+      render: (text, record, index) => {
+        return (
+          <button
+            id={record.id}
+            onClick={(e) => handleUpdateInfo(record)}
+            //record is the row data
+          >
+            Cập nhật
+          </button>
+        );
       },
-      {
-        title: 'Trạng thái',
-        key: 'status',
-        dataIndex: 'status',
-      },
-      {
-        title: 'Thông tin chi tiết',
-        key: 'subinfo',
-        dataIndex: 'subinfo',
-        render: (text, record, index) => {
-          return (
-              <button
-                id={record.id}
-                onClick={e => hanleShowInfo(record)}
-       //record is the row data
-              >Xem</button>
-          );
-        }
-      },
-      {
-        title: 'Cập nhật trạng thái',
-        key: 'updateinfo',
-        dataIndex: 'updateinfo',
-        render: (text, record, index) => {
-          return (
-              <button
-                id={record.id}
-                onClick={e => handleUpdateInfo(record)}
-       //record is the row data
-              >Cập nhật</button>
-          );
-        }
-      }
-
-
+    },
   ];
 
   const handleSearch = () => {
@@ -150,23 +145,21 @@ function Status(props) {
     setPage(e);
   };
 
-  const hanleShowInfo = (record) =>{
+  const hanleShowInfo = (record) => {
     api(record);
-  }
+  };
 
-  const api = async(record)=>{
-    const res =await axios.get(`${BE_URL}/subscribers/${record.subscriber}`);
+  const api = async (record) => {
+    const res = await axios.get(`${BE_URL}/subscribers/${record.subscriber}`);
     setSubscriber(await res.data);
     showModal();
     console.log(subscriber);
-  }
+  };
 
-  const handleUpdateInfo = (record) =>{
+  const handleUpdateInfo = (record) => {
     showUpdateModal();
     setBorrowID(record._id);
-  }
-
-
+  };
 
   return (
     <div
@@ -211,7 +204,6 @@ function Status(props) {
           },
         }}
         dataSource={borrows}
-
       />
       <SubInfo
         isModalOpen={isModalOpen}
@@ -220,10 +212,10 @@ function Status(props) {
       />
 
       <UpdateStatus
-        updateModalOpen = {updateModalOpen}
-        handleUpdateOk = {handleUpdateOk}
-        handleUpdateCancel = {handleUpdateCancel}
-        borrowID = {borrowID}
+        updateModalOpen={updateModalOpen}
+        handleUpdateOk={handleUpdateOk}
+        handleUpdateCancel={handleUpdateCancel}
+        borrowID={borrowID}
       />
     </div>
   );

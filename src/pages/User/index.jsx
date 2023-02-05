@@ -38,14 +38,14 @@ function User(props) {
     const res = await axios.get(`${BE_URL}/subscribers`, {
       params,
     });
-    console.log(params)
+    console.log(params);
     setUsers(
       res.data.items.map((r, i) => ({
         ...r,
         index: i + 1,
       })),
     );
-    console.log(users)
+    console.log(users);
 
     setTotal(res.data.totalItems);
   };

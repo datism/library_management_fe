@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
-import { arrayBufferToBase64 } from '../../helpers';
+import { arrayBufferToBase64, openNotification } from '../../helpers';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 
@@ -28,14 +28,29 @@ function CreateUser(props) {
   };
 
   const onOk = async () => {
-    let check = true;
-    if (!value.name || !isEmail(value.email) || !isMobilePhone(value.phone)) {
-      check = false;
+    if (!value.name) {
+      openNotification('Vui lòng hoàn thành form', 'error');
+      return;
     }
-    if (!check) return;
-    await axios.post(`${BE_URL}/subscribers/`, value);
-    setValue(defaultValue);
-    handleOk();
+    if (!isEmail(value.email)) {
+      openNotification('Email không hợp lệ', 'error');
+      return;
+    }
+    if (!isMobilePhone(value.phone)) {
+      openNotification('Số điện thoại không hợp lệ', 'error');
+      return;
+    }
+    try {
+      await axios.post(`${BE_URL}/subscribers/`, value);
+      setValue(defaultValue);
+      openNotification('Thêm mới người dùng thành công');
+      handleOk();
+    } catch (e) {
+      openNotification(
+        'Có lỗi xảy ra: ' + e.response.data.errorMessage,
+        'error',
+      );
+    }
   };
 
   return (

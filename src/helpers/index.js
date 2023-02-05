@@ -1,3 +1,5 @@
+import { notification } from 'antd';
+
 export function arrayBufferToBase64(buffer) {
   var binary = '';
   var bytes = new Uint8Array(buffer);
@@ -7,3 +9,15 @@ export function arrayBufferToBase64(buffer) {
   }
   return window.btoa(binary);
 }
+
+export const openNotification = (placement, type) => {
+  const value = {
+    message: placement,
+    placement,
+  };
+  if (type == 'error') {
+    notification.error(value);
+  } else {
+    notification.success(value);
+  }
+};

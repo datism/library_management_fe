@@ -4,12 +4,13 @@ import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
-import { arrayBufferToBase64 } from '../../helpers';
+import { arrayBufferToBase64, openNotification } from '../../helpers';
+import { Context } from '../../App';
 
 function BookDetail(props) {
   const { isModalOpen, handleOk, handleCancel, book, bookID } = props;
   const [value, setValue] = useState({});
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState('');
 
   useEffect(() => {
     if (!bookID) {
@@ -34,8 +35,7 @@ function BookDetail(props) {
       publisher: book.publisher,
       type: book.type,
       author: book.author,
-      image:
-        'data:image/jpeg;base64,' + arrayBufferToBase64(book.cover.image.data),
+      image: book.cover,
       cover: null,
       category: book.category,
       //publisherDate: book.publisherDate
@@ -68,17 +68,6 @@ function BookDetail(props) {
   // }
 
   const onOk = async () => {
-    //console.log(value);
-    //const updatevalue = new Date(value.publisherDate);
-    // setValue(current => {
-    //   // 👇️ remove the salary key from an object
-    //   const {publisherDate, ...rest} = current;
-
-    //   return rest;
-    // });
-    console.log(value)
-    //value.publisherDate = updatevalue;
-    console.log(value)
     let check = true;
     Object.keys(value).forEach((e) => {
       if (!bookID) {
@@ -95,7 +84,10 @@ function BookDetail(props) {
         }
       }
     });
-    if (!check) return;
+    if (!check) {
+      openNotification('Vui lòng hoàn thành form', 'error');
+      return;
+    }
     const formData = new FormData();
     Object.keys(value).forEach((e) => {
       if (value[e]) {
@@ -107,14 +99,21 @@ function BookDetail(props) {
         'content-type': 'multipart/form-data',
       },
     };
-    console.log(formData);
-    console.log(bookID)
-    if (bookID) {
-      await axios.put(`${BE_URL}/books/${book._id}`, formData, config);
-    } else {
-      await axios.post(`${BE_URL}/books/`, formData, config);
+    try {
+      if (bookID) {
+        await axios.put(`${BE_URL}/books/${book._id}`, formData, config);
+        openNotification('Cập nhật thành công');
+      } else {
+        await axios.post(`${BE_URL}/books/`, formData, config);
+        openNotification('Tạo thành công');
+      }
+      handleOk();
+    } catch (e) {
+      openNotification(
+        'Có lỗi xảy ra: ' + e.response.data.errorMessage,
+        'error',
+      );
     }
-    handleOk();
   };
 
   return (
@@ -238,7 +237,6 @@ function BookDetail(props) {
           onChange={onChange}
         />
       </div>
-
 
       <div
         style={{

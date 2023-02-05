@@ -20,11 +20,11 @@ function Borrow(props) {
 
   const handleContinue = () => {
     setContinuePage(true);
-  }
+  };
 
   const handleBack = () => {
     setContinuePage(false);
-  }
+  };
 
   const columns = [
     {
@@ -65,118 +65,119 @@ function Borrow(props) {
   ];
 
   const handleSearch = () => {
-    const value = document.getElementById('search-box').value
+    const value = document.getElementById('search-box').value;
     console.log(value);
     setCopyID(value);
-  }
-
+  };
 
   useEffect(() => {
-    console.log(copyID)
+    console.log(copyID);
     if (copyID !== null && copyID !== '')
-    fetch(`${BE_URL}/copies/${copyID}`)
-       .then((response) => response.json())
-       .then((res) => {
+      fetch(`${BE_URL}/copies/${copyID}`)
+        .then((response) => response.json())
+        .then((res) => {
           console.log(res);
           if (res.errorCode === 40000) {
             setBookChecked(false);
             setBookDetail([]);
             setCopyID(null);
             setBookID(null);
-          }
-          else setBookID(res.book);
-       })
-       .catch((err) => {
+          } else setBookID(res.book);
+        })
+        .catch((err) => {
           console.log(err.message);
-       });
- }, [copyID]);
+        });
+  }, [copyID]);
 
- useEffect(() => {
-  if (bookID !== null && copyID !== null)
-  fetch(`${BE_URL}/books/${bookID}`)
-     .then((response) => response.json())
-     .then((res) => {
-        console.log(res);
-        setBookDetail([res]);
-        setBookChecked(true);
-     })
-     .catch((err) => {
-     });
-}, [bookID]);
-
+  useEffect(() => {
+    if (bookID !== null && copyID !== null)
+      fetch(`${BE_URL}/books/${bookID}`)
+        .then((response) => response.json())
+        .then((res) => {
+          console.log(res);
+          setBookDetail([res]);
+          setBookChecked(true);
+        })
+        .catch((err) => {});
+  }, [bookID]);
 
   return (
-
-      <>
-        {continuePage === false ? <div
+    <>
+      {continuePage === false ? (
+        <div
           style={{
             marginTop: 40,
           }}
-          >
-        <p
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            fontSize: 28,
-            fontWeight: 600,
-            color: 'white',
-          }}
         >
-          Nhập / quét mã sách
-        </p>
-        <div className="search-box">
-          <input
-            className="input-search"
-            placeholder="Tìm kiếm"
-            id="search-box"
-            //   onChange={handleEnter}
-          ></input>
-          <button className="btn-search" onClick={handleSearch}>
-            <SearchOutlined className="icon-search" />
-          </button>
+          <p
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 28,
+              fontWeight: 600,
+              color: 'white',
+            }}
+          >
+            Nhập / quét mã sách
+          </p>
+          <div className="search-box">
+            <input
+              className="input-search"
+              placeholder="Tìm kiếm"
+              id="search-box"
+              //   onChange={handleEnter}
+            ></input>
+            <button className="btn-search" onClick={handleSearch}>
+              <SearchOutlined className="icon-search" />
+            </button>
+          </div>
+
+          <p
+            style={{
+              width: '100%',
+              textAlign: 'center',
+              fontSize: 28,
+              fontWeight: 600,
+              color: 'white',
+            }}
+          >
+            Thông tin chi tiết về sách
+          </p>
+          <Table
+            columns={columns}
+            rowKey="index"
+            pagination={{
+              showSizeChanger: false,
+              style: {
+                display: 'flex',
+                flexDirection: 'row',
+              },
+            }}
+            dataSource={bookDetail}
+          />
         </div>
-
-        <p style={{
-            width: '100%',
-            textAlign: 'center',
-            fontSize: 28,
-            fontWeight: 600,
-            color: 'white',
-          }}>Thông tin chi tiết về sách</p>
-        <Table
-          columns={columns}
-          rowKey="index"
-          pagination={{
-            showSizeChanger: false,
-            style: {
-              display: 'flex',
-              flexDirection: 'row',
-            },
-          }}
-          dataSource={bookDetail}
-        />
-
-      </div>:
-        <ListSub copyID = {copyID}/>
-    }
-      {bookChecked === true &&
-      <>
-        <div className='continue-page button-page'>
-          {!continuePage && <button className='continue-page-button' onClick={handleContinue}>
+      ) : (
+        <ListSub copyID={copyID} />
+      )}
+      {bookChecked === true && (
+        <>
+          <div className="continue-page button-page">
+            {!continuePage && (
+              <button className="continue-page-button" onClick={handleContinue}>
                 <p>Continue</p>
-            </button>
-          }
-        </div>
-        <div className='continue-page button-page'>
-          {continuePage && <button className='continue-page-button' onClick={handleBack}>
+              </button>
+            )}
+          </div>
+          <div className="continue-page button-page">
+            {continuePage && (
+              <button className="continue-page-button" onClick={handleBack}>
                 <p>Back</p>
-            </button>
-          }
-        </div>
-      </>}
+              </button>
+            )}
+          </div>
+        </>
+      )}
     </>
-
-
   );
 }
 

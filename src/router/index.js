@@ -2,7 +2,7 @@ import AccountInfo from '../pages/Common/AccountInfo';
 import Home from '../pages/Common/Home';
 import User from '../pages/User';
 import Borrow from '../pages/Borrow/Borrow';
-import Status from '../pages/Status/Status'
+import Status from '../pages/Status/Status';
 
 export const PUBLIC_ROUTER = [
   {

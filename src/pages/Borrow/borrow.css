@@ -1,4 +1,3 @@
-
 .main {
   position: relative;
 }
@@ -6,7 +5,7 @@
   height: auto;
   font-size: 12pt;
   padding: 6px 15px;
-  position:relative;
+  position: relative;
 }
 
 .button-page button:hover {
@@ -48,9 +47,3 @@
   position: absolute;
   right: 0;
 }
-
-
-
-
-
-

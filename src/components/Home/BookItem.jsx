@@ -20,11 +20,9 @@ function BookItem(props) {
             width: '100%',
             padding: '0px',
             height: 200,
+            objectFit: 'cover',
           }}
-          src={
-            'data:image/jpeg;base64,' +
-            arrayBufferToBase64(book.cover.image.data)
-          }
+          src={book.cover}
           onClick={onShowDetail}
         />
       }

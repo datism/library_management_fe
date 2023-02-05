@@ -54,7 +54,9 @@ function SubInfo(props) {
             paddingLeft: 8,
             flex: 1,
           }}
-        >{subinfo.name}</p>
+        >
+          {subinfo.name}
+        </p>
       </div>
       <div
         style={{
@@ -78,7 +80,9 @@ function SubInfo(props) {
             paddingLeft: 8,
             flex: 1,
           }}
-        >{subinfo.email}</p>
+        >
+          {subinfo.email}
+        </p>
       </div>
       <div
         style={{
@@ -102,7 +106,9 @@ function SubInfo(props) {
             paddingLeft: 8,
             flex: 1,
           }}
-        >{subinfo.phone}</p>
+        >
+          {subinfo.phone}
+        </p>
       </div>
     </Modal>
   );
