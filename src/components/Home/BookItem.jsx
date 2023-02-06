@@ -7,10 +7,11 @@ function BookItem(props) {
     <Card
       hoverable
       style={{
-        width: '100%',
+        width: '95%',
         background: 'white',
         cursor: 'pointer',
         borderRadius: 15,
+        margin: 'auto',
         marginTop: 10,
 
       }}
@@ -21,7 +22,7 @@ function BookItem(props) {
             borderRadius: '15px 15px 0px 0px',
             width: '100%',
             padding: '0px',
-            height: 300,
+            height: 250,
           }}
           src={book.cover}
           onClick={onShowDetail}
@@ -41,7 +42,6 @@ function BookItem(props) {
             fontSize: 18,
             fontWeight: 600,
             marginBottom: 8,
-              backgroundColor:"red",
           }}
         >
           {book.title}

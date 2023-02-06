@@ -1,4 +1,4 @@
-import { Button, Modal } from 'antd';
+import { Button, Modal, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useEffect } from 'react';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BE_URL } from '../../constant';
 import { openNotification } from '../../helpers';
 import { Context } from '../../App';
+const { TextArea } = Input;
 
 function BookDetail(props) {
   const { isModalOpen, handleOk, handleCancel, book, bookID } = props;
@@ -42,12 +43,11 @@ function BookDetail(props) {
     });
   }, [bookID]);
 
-  const onChange = (e) => {
-    const name = e.target.name;
-    const value1 = e.target.value;
+  const onChange = (name, userValue) => {
+    console.log(name, userValue)
     const newValue = {
       ...value,
-      [name]: value1,
+      [name]: userValue,
     };
     setValue(newValue);
   };
@@ -119,10 +119,12 @@ function BookDetail(props) {
   return (
     <Modal
       style={{
+        position: "relative",
+        top: 10,
         height: 100,
         width: 100,
       }}
-      title="Book Detail"
+      title="Thông tin về sách"
       visible={isModalOpen}
       onOk={onOk}
       onCancel={handleCancel}
@@ -143,15 +145,14 @@ function BookDetail(props) {
         >
           Tiêu đề:
         </p>
-        <input
+        <Input
           style={{
-            border: '1px solid black',
             paddingLeft: 8,
             flex: 1,
           }}
           name="title"
           value={value.title}
-          onChange={onChange}
+          onChange={(e) => onChange('title', e.target.value)}
         />
       </div>
       <div
@@ -170,15 +171,14 @@ function BookDetail(props) {
         >
           Tác giả:
         </p>
-        <input
+        <Input
           style={{
-            border: '1px solid black',
             paddingLeft: 8,
             flex: 1,
           }}
           name="author"
           value={value.author}
-          onChange={onChange}
+          onChange={(e) => onChange('author', e.target.value)}
         />
       </div>
 
@@ -193,48 +193,19 @@ function BookDetail(props) {
           style={{
             marginRight: 16,
             marginBottom: 0,
-            width: 55,
+            width: 50,
           }}
         >
-          Nhà xuất bản:
+          Xuất bản:
         </p>
-        <input
+        <Input
           style={{
-            border: '1px solid black',
-            paddingLeft: 8,
+            paddingLeft: 6,
             flex: 1,
           }}
           name="publisher"
           value={value.publisher}
-          onChange={onChange}
-        />
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          marginBottom: 8,
-          alignItems: 'center',
-        }}
-      >
-        <p
-          style={{
-            marginRight: 16,
-            marginBottom: 0,
-            width: 55,
-          }}
-        >
-          Ngày xuất bản:
-        </p>
-        <input
-          style={{
-            border: '1px solid black',
-            paddingLeft: 8,
-            flex: 1,
-          }}
-          name="publisherDate"
-          //value={value.publisherDate}
-          onChange={onChange}
+          onChange={(e) => onChange('publisher', e.target.value)}
         />
       </div>
 
@@ -255,19 +226,13 @@ function BookDetail(props) {
         >
           Loại:
         </p>
-        <select
-          onChange={onChange}
-          name="type"
-          style={{ flex: 1 }}
+        <Select
+          placeholder="Chọn loại sách"
+          optionFilterProp="children"
           value={value.type}
-        >
-          <option value="None">None</option>
-          {type.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+          onChange={(e) => onChange('type', e)}
+          options={type.map((t) =>{return {value: t, label: t}})}
+        />
       </div>
       <div
         style={{
@@ -286,19 +251,14 @@ function BookDetail(props) {
         >
           Thể loại:
         </p>
-        <select
-          onChange={onChange}
-          name="category"
-          style={{ flex: 1 }}
+        <Select
+          placeholder="Chọn thể loại sách"
+          optionFilterProp="children"
+          maxTagTextLength={20}
           value={value.category}
-        >
-          <option value="None">None</option>
-          {category.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+          onChange={(e) => onChange('category', e)}
+          options={category.map((t) =>{return {value: t, label: t}})}
+        />
       </div>
       <div
         style={{
@@ -309,22 +269,17 @@ function BookDetail(props) {
       >
         <p
           style={{
-            marginRight: 16,
+            marginRight: 22,
             marginBottom: 0,
             width: 50,
           }}
         >
           Mô tả:
         </p>
-        <textarea
-          style={{
-            border: '1px solid black',
-            paddingLeft: 8,
-            flex: 1,
-          }}
+        <TextArea
           name="description"
           value={value.description}
-          onChange={onChange}
+          onChange={(e) => onChange('description', e.target.value)}
         />
       </div>
 
@@ -346,14 +301,14 @@ function BookDetail(props) {
         </p>
         <label
           style={{
-            border: '1px solid black',
+            border: '1px solid gray',
             padding: '4px 8px',
             borderRadius: 4,
-            background: '#2DD6E3',
+            background: "white",
           }}
         >
-          Upload Image
-          <input
+          Tải ảnh bìa lên
+          <Input
             type="file"
             style={{
               display: 'none',
