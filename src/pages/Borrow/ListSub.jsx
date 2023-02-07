@@ -112,10 +112,9 @@ function ListSub(props) {
               textAlign: 'center',
               fontSize: 28,
               fontWeight: 600,
-              color: 'white',
             }}
           >
-            Choose Subscriber
+            Chọn người đọc
           </p>
           <div className="search-box">
             <input
