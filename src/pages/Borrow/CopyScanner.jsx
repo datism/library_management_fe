@@ -58,12 +58,19 @@ export default function CopyScanner (props) {
                     height:'100%',
                     width: '50%',
                     borderRightStyle: 'solid',
-                    borderRightWidth: 1
+                    borderRightWidth: 1,
+                    flexDirection: 'column',
+                    display: 'flex',
+                    alignItems: 'center'
                 }}>
                     <QRScanner
                         QRData={QRData}
                         updateQRData={updateQRData}
                     />
+                    <p style={{
+                        fontSize: 20,
+                        fontWeight: 'bold'
+                    }}> Scan mã QR trên sách để hiển thị thông tin</p>
                 </div>
                 <div style={{
                     height:'100%',

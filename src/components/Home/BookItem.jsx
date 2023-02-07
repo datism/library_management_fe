@@ -12,7 +12,7 @@ function BookItem(props) {
         cursor: 'pointer',
         borderRadius: 15,
         margin: 'auto',
-        marginTop: 10,
+        marginTop: 20,
         boxShadow: "0 1px 2px rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%)",
       }}
       cover={
@@ -22,7 +22,8 @@ function BookItem(props) {
             borderRadius: '15px 15px 0px 0px',
             width: '100%',
             padding: '0px',
-            height: 250,
+            height: 300,
+            objectFit: 'fill'
           }}
           src={book.cover}
           onClick={onShowDetail}

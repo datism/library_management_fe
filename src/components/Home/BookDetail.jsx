@@ -1,6 +1,6 @@
 import { Button, Modal, Input, Select } from 'antd';
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
@@ -9,7 +9,7 @@ import { Context } from '../../App';
 const { TextArea } = Input;
 
 function BookDetail(props) {
-  const { isModalOpen, handleOk, handleCancel, book, bookID } = props;
+  const { isModalOpen, handleOk, handleCancel, book, bookID, onCopyAdded } = props;
   const [value, setValue] = useState({});
   const [date, setDate] = useState('');
 
@@ -24,6 +24,7 @@ function BookDetail(props) {
         cover: null,
         category: '',
         author: '',
+        copyLeft: 0
         //publisherDate: '',
       });
       return;
@@ -39,6 +40,7 @@ function BookDetail(props) {
       image: book.cover,
       cover: null,
       category: book.category,
+      copyLeft: book.copyLeft
       //publisherDate: book.publisherDate
     });
   }, [bookID]);
@@ -69,17 +71,22 @@ function BookDetail(props) {
 
   const onOk = async () => {
     let check = true;
+    console.log("VALUE TO BE UPDATED", value)
     Object.keys(value).forEach((e) => {
       if (!bookID) {
-        if (!value[e]) {
+        if (value[e] === null) {
+        console.log("HI")
           check = false;
-        } else if ((e == 'type' || e == 'category') && value[e] == 'None') {
+        } else if ((e === 'type' || e === 'category') && value[e] === 'None') {
+            console.log("H2")
           check = false;
         }
       } else {
-        if (e != 'cover' && !value[e]) {
+        if (e !== 'cover' && value[e] === null) {
+            console.log("H3", e)
           check = false;
-        } else if ((e == 'type' || e == 'category') && value[e] == 'None') {
+        } else if ((e === 'type' || e === 'category') && value[e] === 'None') {
+            console.log("H4")
           check = false;
         }
       }
@@ -115,6 +122,26 @@ function BookDetail(props) {
       );
     }
   };
+
+  const onAddNewCopy = async() => {
+      try {
+          const response = await axios.post(
+              `${BE_URL}/copies`,
+              {"book": bookID},
+              {headers: {'Content-Type': 'application/json'}}
+          );
+          onChange('copyLeft', value.copyLeft + 1)
+          handleOk();
+          console.log("NEW COPY ID", response.data)
+          onCopyAdded(response.data['_id'])
+      } catch (e) {
+          openNotification(
+              'Có lỗi xảy ra: ' + e.response.data.errorMessage,
+              'error',
+          );
+      }
+
+  }
 
   return (
     <Modal
@@ -325,6 +352,33 @@ function BookDetail(props) {
           />
         </label>
       </div>
+
+        <div
+            style={{
+                display: 'flex',
+                marginBottom: 8,
+                alignItems: 'center',
+            }}
+        >
+            <p
+                style={{
+                    marginRight: 16,
+                    marginBottom: 0,
+                    width: 50,
+                }}
+            >
+                Còn lại
+            </p>
+            <p style={{
+                marginRight: 20
+            }}>
+                {value.copyLeft} quyển
+            </p>
+            <Button
+                type='primary'
+                onClick={onAddNewCopy}
+            > Thêm bản </Button>
+        </div>
       <div>
         {value.image && (
           <img
@@ -333,6 +387,7 @@ function BookDetail(props) {
               width: '100%',
               marginTop: 8,
               height: 300,
+              objectFit: 'contain'
             }}
             src={value.image}
           />

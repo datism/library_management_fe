@@ -5,11 +5,18 @@ import BookItem from './BookItem';
 import BookDetail from './BookDetail';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
+import QRCodeModal from "./QRCodeModal";
 
 const typeList = ['Đang hot', 'Mới ra mắt'];
 
 function ListBook(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // State for Copy QR Code
+  const [isQRCodeModalOpen, setQRCodeModalOpen] = useState(false);
+  const [addedCopyId, setAddedCopyId] = useState(null)
+
+  // State for book
   const [bookList, setBookList] = useState([]);
   const [bookID, setBookID] = useState(0);
   const [pageNum, setPageNum] = useState(1);
@@ -35,13 +42,28 @@ function ListBook(props) {
     const res = await axios.get(`${BE_URL}/books`, {
       params: {
         currentPage: pageNum,
-        itemsPerPage: 10,
+        itemsPerPage: 8,
         ...filter,
       },
     });
-    setBookList(res.data.items);
+    const books = []
+    for (const book of res.data.items) {
+      console.log(book._id)
+      const res = await axios.get(`${BE_URL}/copies`, {
+        params: {
+          book: book._id,
+          status: 'available',
+        }
+      })
+
+      const bookWithCopyData = book
+      bookWithCopyData['copyLeft'] = res.data.length
+      books.push(bookWithCopyData)
+    }
+    setBookList(books);
     setTotal(res.data.totalItems);
   };
+
   useEffect(() => {
     fetchData();
   }, [props.filter, pageNum]);
@@ -79,6 +101,17 @@ function ListBook(props) {
     setBookSelected(null);
     setIsModalOpen(true);
   };
+
+  const handleOpenQRCodeModal = (data) => {
+    console.log(data)
+    setAddedCopyId(data)
+    setQRCodeModalOpen(true)
+  }
+
+  const onCloseQRCodeModal = () => {
+    fetchData();
+    setQRCodeModalOpen(false)
+  }
 
   return (
     <div className="wrap-list">
@@ -148,6 +181,12 @@ function ListBook(props) {
         handleOk={handleOk}
         handleCancel={handleCancel}
         book={bookSelected}
+        onCopyAdded={(e) => handleOpenQRCodeModal(e)}
+      />
+      <QRCodeModal
+          isQRCodeModalOpen={isQRCodeModalOpen}
+          data={addedCopyId}
+          closeQRCodeModal={onCloseQRCodeModal}
       />
     </div>
   );

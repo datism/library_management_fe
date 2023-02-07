@@ -1,6 +1,6 @@
 import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { BE_URL } from '../../constant';
