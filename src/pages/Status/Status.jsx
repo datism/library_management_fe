@@ -51,7 +51,7 @@ function Status(props) {
       itemsPerPage: 10,
     };
     if (status) {
-      params.subscriber = status;
+      params.status = status;
     }
     const res = await axios.get(`${BE_URL}/borrows`, {
       params,
