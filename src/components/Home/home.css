@@ -310,6 +310,7 @@ img {
   font-size: 16pt;
   background-color: white;
   border-radius: 15px;
+  box-shadow: 0 1px 2px rgb(60 64 67 / 30%), 0 2px 6px 2px rgb(60 64 67 / 15%);
 }
 
 .number-of-page-search .left-column-page-num {

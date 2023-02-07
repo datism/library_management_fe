@@ -106,7 +106,6 @@
 }
 
 .title {
-  color: rgb(209, 214, 113);
   width: 90%;
   margin: 40px 4% 0 0;
   text-align: center;
@@ -115,7 +114,7 @@
 }
 
 .info-box {
-  background: rgb(118, 247, 252);
+  background-color: white;
   width: 80%;
   height: max-content;
   padding: 30px 5%;
@@ -135,15 +134,15 @@
   width: 100%;
   height: 50px;
   font-size: 20px;
-  margin: 30px 0;
+  margin: 20px 0;
   display: flex;
 }
 
 .box-member .label {
   position: relative;
-  font-size: 18pt;
+  font-size: 16pt;
   /* z-index: 1; */
-  height: 50px;
+  height: 40px;
   margin: auto 0;
   display: flex;
   flex-direction: column;

@@ -4,8 +4,12 @@
 .continue-page {
   height: auto;
   font-size: 12pt;
-  padding: 6px 15px;
-  position: relative;
+  flex-grow: 1;
+}
+
+.button-page {
+  display: flex;
+  justify-content: center;
 }
 
 .button-page button:hover {
@@ -26,8 +30,6 @@
   font-size: 14pt;
   border: 3px solid rgb(18, 62, 167);
   color: rgb(18, 62, 167);
-  position: absolute;
-  right: 50%;
 }
 
 .borrow-item {

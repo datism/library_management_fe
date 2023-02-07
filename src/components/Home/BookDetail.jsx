@@ -230,8 +230,12 @@ function BookDetail(props) {
           placeholder="Chọn loại sách"
           optionFilterProp="children"
           value={value.type}
+          maxTagTextLength={20}
           onChange={(e) => onChange('type', e)}
           options={type.map((t) =>{return {value: t, label: t}})}
+          style={{
+              width: 200
+          }}
         />
       </div>
       <div
@@ -258,6 +262,9 @@ function BookDetail(props) {
           value={value.category}
           onChange={(e) => onChange('category', e)}
           options={category.map((t) =>{return {value: t, label: t}})}
+          style={{
+              width: 200
+          }}
         />
       </div>
       <div

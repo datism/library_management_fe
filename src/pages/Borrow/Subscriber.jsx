@@ -6,6 +6,7 @@ import { BE_URL } from '../../constant';
 import './subscriber.css';
 import '../../pages/Common/commonPage.css';
 import { openNotification } from '../../helpers';
+import {Button} from "antd";
 
 const genderList = ['Nam', 'Nữ', 'Khác'];
 
@@ -14,6 +15,7 @@ function Subscriber(props) {
   //const navigate = useNavigate();
   const [gender, setGender] = useState(null);
   const [response, setResponse] = useState();
+  const [submitButtonLoading, setSubmitButtonLoading] = useState(false)
 
   useEffect(() => {
     console.log(props.booktitleid);
@@ -34,9 +36,11 @@ function Subscriber(props) {
   };
 
   const handleSubmit = async () => {
+    setSubmitButtonLoading(true)
     //document.querySelector('#warning6').classList.add('hidden');
     CheckValidate();
     const endDate = new Date();
+    console.log("CHECKPOINT 2")
 
     if (day) {
       endDate.setDate(endDate.getDate() + Number(day));
@@ -54,7 +58,7 @@ function Subscriber(props) {
       };
       // subscriber API
 
-      console.log(json);
+      console.log("JSON: ", json);
       //document.getElementById('warning6').classList.remove('hidden');
       setResponse({});
       try {
@@ -67,6 +71,8 @@ function Subscriber(props) {
           'error',
         );
       }
+
+      setSubmitButtonLoading(false)
     }
   };
 
@@ -107,7 +113,7 @@ function Subscriber(props) {
         </div>
         <div className="box-member">
           <div className="label">Chọn số ngày mượn: </div>
-          <select id="day-input" className="input-box" defaultValue={''}>
+          <select id="day-input" className="input-box" defaultValue={7}>
             <option value="" disabled hidden>
               Số ngày mượn
             </option>
@@ -130,9 +136,9 @@ function Subscriber(props) {
             Cần chọn số ngày!!!
           </p>
         </div>
-        <button className="button-submit" onClick={handleSubmit}>
+        <Button type="primary" onClick={handleSubmit} loading={submitButtonLoading}>
           Mượn ngay
-        </button>
+        </Button>
       </div>
     </>
   );

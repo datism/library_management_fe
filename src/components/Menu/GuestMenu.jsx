@@ -18,13 +18,13 @@ const menu = [
     link: '/user',
   },
   {
-    icon: <AccountBookOutlined />,
+    icon: <UserOutlined />,
     text: 'Mượn sách',
     link: '/borrow',
   },
   {
     icon: <AccountBookOutlined />,
-    text: 'Trạng thái mượn sách',
+    text: 'Lịch sử mượn',
     link: '/status',
   },
 ];
