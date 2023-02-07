@@ -10,9 +10,11 @@ import '../../components/Home/home.css';
 import './borrow.css';
 import User from '../User';
 import ListSub from './ListSub';
+import QrReader from './QRScanner'
+import CopyScanner from "./CopyScanner";
 
 function Borrow(props) {
-  const [bookDetail, setBookDetail] = useState([]);
+  const [bookDetail, setBookDetail] = useState();
   const [bookID, setBookID] = useState(null);
   const [continuePage, setContinuePage] = useState(false);
   const [bookChecked, setBookChecked] = useState(false);
@@ -64,25 +66,29 @@ function Borrow(props) {
     },
   ];
 
-  const handleSearch = () => {
-    const value = document.getElementById('search-box').value;
-    console.log(value);
-    setCopyID(value);
+  const handleScanQRCode = (e) => {
+    setCopyID(e);
   };
 
   useEffect(() => {
     console.log(copyID);
     if (copyID !== null && copyID !== '')
       fetch(`${BE_URL}/copies/${copyID}`)
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status === 200)
+            return response.json()
+
+          // Request failed handler
+          setBookChecked(false);
+          setBookDetail(null);
+          setCopyID(null);
+          setBookID(null);
+          return null
+        })
         .then((res) => {
           console.log(res);
-          if (res.errorCode === 40000) {
-            setBookChecked(false);
-            setBookDetail([]);
-            setCopyID(null);
-            setBookID(null);
-          } else setBookID(res.book);
+          if (res !== null)
+            setBookID(res.book);
         })
         .catch((err) => {
           console.log(err.message);
@@ -95,89 +101,46 @@ function Borrow(props) {
         .then((response) => response.json())
         .then((res) => {
           console.log(res);
-          setBookDetail([res]);
+          setBookDetail(res);
           setBookChecked(true);
         })
-        .catch((err) => {});
+        .catch((err) => {console.log(err.message);});
   }, [bookID]);
 
   return (
-    <>
+    <div>
       {continuePage === false ? (
-        <div
-          style={{
-            marginTop: 40,
-          }}
-        >
-          <p
+          <CopyScanner
+            bookChecked={bookChecked}
+            onResult={handleScanQRCode}
+            bookDetail={bookDetail}
             style={{
-              width: '100%',
-              textAlign: 'center',
-              fontSize: 28,
-              fontWeight: 600,
-              color: 'white',
+              flexGrow: 99999999,
+              marginBottom: 200
             }}
-          >
-            Nhập / quét mã sách
-          </p>
-          <div className="search-box">
-            <input
-              className="input-search"
-              placeholder="Tìm kiếm"
-              id="search-box"
-              //   onChange={handleEnter}
-            ></input>
-            <button className="btn-search" onClick={handleSearch}>
-              <SearchOutlined className="icon-search" />
-            </button>
-          </div>
-
-          <p
-            style={{
-              width: '100%',
-              textAlign: 'center',
-              fontSize: 28,
-              fontWeight: 600,
-              color: 'white',
-            }}
-          >
-            Thông tin chi tiết về sách
-          </p>
-          <Table
-            columns={columns}
-            rowKey="index"
-            pagination={{
-              showSizeChanger: false,
-              style: {
-                display: 'flex',
-                flexDirection: 'row',
-              },
-            }}
-            dataSource={bookDetail}
           />
-        </div>
-      ) : (
+      ): (
         <ListSub copyID={copyID} />
       )}
       {bookChecked === true && (
-        <>
+        <div>
           <div className="continue-page button-page">
             {!continuePage && (
               <button className="continue-page-button" onClick={handleContinue}>
-                <p>Continue</p>
+                <p>Tiếp tục</p>
               </button>
             )}
           </div>
-          <div className="continue-page button-page">
             {continuePage && (
-              <button className="continue-page-button" onClick={handleBack}>
-                <p>Back</p>
-              </button>
+              <div className="continue-page button-page">
+                <button className="continue-page-button" onClick={handleBack}>
+                  <p>Back</p>
+                </button>
+              </div>
             )}
-          </div>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }
 
