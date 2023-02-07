@@ -1,1 +1,1 @@
-export const BE_URL = 'http://localhost:8000';
+export const BE_URL = 'https://library-management-be.onrender.com';
