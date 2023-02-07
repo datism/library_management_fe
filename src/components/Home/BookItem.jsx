@@ -40,9 +40,13 @@ function BookItem(props) {
       >
         <p
           style={{
+            width: 230,
             fontSize: 18,
             fontWeight: 600,
             marginBottom: 8,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
           }}
         >
           {book.title}
