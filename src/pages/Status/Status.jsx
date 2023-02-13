@@ -79,14 +79,31 @@ function Status(props) {
       render: (text) => <p>{text}</p>,
     },
     {
-      title: 'SubsriberID',
+      title: 'Người mượn',
       dataIndex: 'subscriber',
       key: 'subscriber',
+      render: (sub) => <p>{sub.name}</p>,
     },
     {
-      title: 'Mã sách',
+      title: 'Số điện thoai',
+      dataIndex: 'subscriber',
+      key: 'subscriber',
+      render: (sub) => <p>{sub.phone}</p>,
+    },
+    {
+      title: 'Email',
+      dataIndex: 'subscriber',
+      key: 'subscriber',
+      render: (sub) => <p>{sub.email}</p>,
+    },
+    {
+      title: 'Tên sách',
       dataIndex: 'copy',
       key: 'copy',
+      render: (copy) => ({
+        onClick: () => {},
+        children: <NameBook id={copy.book} />
+      })
     },
     {
       title: 'Ngày mượn',
@@ -103,22 +120,22 @@ function Status(props) {
       key: 'status',
       dataIndex: 'status',
     },
-    {
-      title: 'Thông tin chi tiết',
-      key: 'subinfo',
-      dataIndex: 'subinfo',
-      render: (text, record, index) => {
-        return (
-          <button
-            id={record.id}
-            onClick={(e) => hanleShowInfo(record)}
-            //record is the row data
-          >
-            Xem
-          </button>
-        );
-      },
-    },
+    // {
+    //   title: 'Thông tin chi tiết',
+    //   key: 'subinfo',
+    //   dataIndex: 'subinfo',
+    //   render: (text, record, index) => {
+    //     return (
+    //       <button
+    //         id={record.id}
+    //         onClick={(e) => hanleShowInfo(record)}
+    //         //record is the row data
+    //       >
+    //         Xem
+    //       </button>
+    //     );
+    //   },
+    // },
     {
       title: 'Cập nhật trạng thái',
       key: 'updateinfo',
@@ -145,16 +162,37 @@ function Status(props) {
     setPage(e);
   };
 
-  const hanleShowInfo = (record) => {
-    api(record);
+  const NameBook = ({ id }) => {
+    const [name, setName] = useState(null);
+
+    useEffect(() => {
+      axios.get(`${BE_URL}/books/${id}`)
+        .then(response => {
+          setName(response.data.title);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }, [id]);
+
+    return <p>{name ?? 'Loading...'}</p>;
   };
 
-  const api = async (record) => {
-    const res = await axios.get(`${BE_URL}/subscribers/${record.subscriber}`);
-    setSubscriber(await res.data);
-    showModal();
-    console.log(subscriber);
-  };
+  // const hanleShowInfo = (record) => {
+  //   api(record);
+  // };
+
+  // const api = async (record) => {
+  //   const res = await axios.get(`${BE_URL}/subscribers/${record.subscriber}`);
+  //   setSubscriber(await res.data);
+  //   showModal();
+  //   console.log(subscriber);
+  // };
+
+  // async function handleGetBook (idBook){
+  //   const res = await axios.get(`${BE_URL}/books/${idBook}`);
+  //   return <p>{res.title}</p>;
+  // }
 
   const handleUpdateInfo = (record) => {
     showUpdateModal();
@@ -204,11 +242,11 @@ function Status(props) {
         }}
         dataSource={borrows}
       />
-      <SubInfo
+      {/* <SubInfo
         isModalOpen={isModalOpen}
         handleOk={handleOk}
         subinfo={subscriber}
-      />
+      /> */}
 
       <UpdateStatus
         updateModalOpen={updateModalOpen}
