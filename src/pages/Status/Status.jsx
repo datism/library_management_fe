@@ -7,6 +7,10 @@ import { BE_URL } from '../../constant';
 import { FilterOutlined, SearchOutlined } from '@ant-design/icons';
 import SubInfo from './SubInfo';
 import UpdateStatus from './UpdateStatus';
+import { useRef } from 'react';
+import { Button, Input } from 'antd';
+import Highlighter from 'react-highlight-words';
+import  { InputRef } from 'antd';
 
 function Status(props) {
   const [borrows, setBorrows] = useState([]);
@@ -18,6 +22,91 @@ function Status(props) {
   const [borrowID, setBorrowID] = useState(0);
 
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
+
+
+  
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = clearFilters => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }} onKeyDown={e => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            Filter
+          </Button>
+          <Button type="link" size="small" onClick={clearFilters}>
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        .toString()
+        .toLowerCase()
+        .includes((value || '').toLowerCase()),
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select());
+      }
+    },
+    render: (text, record) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text}
+        />
+      ) : (
+        text
+      ),
+  });
+
+
+  
 
   const showModal = () => {
     console.log('Hi');
@@ -60,9 +149,13 @@ function Status(props) {
     setBorrows(
       res.data.map((r, i) => ({
         ...r,
+        name: r.subscriber.name,
+        phone: r.subscriber.phone,
+        email: r.subscriber.email,
         index: i + 1,
       })),
     );
+
 
     setTotal(res.data.totalItems);
   };
@@ -80,21 +173,30 @@ function Status(props) {
     },
     {
       title: 'Người mượn',
-      dataIndex: 'subscriber',
-      key: 'subscriber',
-      render: (sub) => <p>{sub.name}</p>,
+      dataIndex: 'name',
+      key: 'name',
+      render: (sub) => {
+        return <p>{sub.name}</p>;
+      },
+      ...getColumnSearchProps('name'),
     },
     {
       title: 'Số điện thoai',
-      dataIndex: 'subscriber',
-      key: 'subscriber',
-      render: (sub) => <p>{sub.phone}</p>,
+      dataIndex: 'phone',
+      key: 'phone',
+      render: (sub) => {
+        return <p>{sub.phone}</p>;
+      },
+      ...getColumnSearchProps('phone'),
     },
     {
       title: 'Email',
-      dataIndex: 'subscriber',
-      key: 'subscriber',
-      render: (sub) => <p>{sub.email}</p>,
+      dataIndex: 'email',
+      key: 'email',
+      render: (sub) => {
+        return <p>{sub.email}</p>;
+    },
+      ...getColumnSearchProps('email'),
     },
     {
       title: 'Tên sách',
@@ -103,22 +205,26 @@ function Status(props) {
       render: (copy) => ({
         onClick: () => {},
         children: <NameBook id={copy.book} />
-      })
+      }),
+      //...getColumnSearchProps('book'),
     },
     {
       title: 'Ngày mượn',
       key: 'startDate',
       dataIndex: 'startDate',
+      ...getColumnSearchProps('startDate'),
     },
     {
       title: 'Ngày trả',
       key: 'endDate',
       dataIndex: 'endDate',
+      ...getColumnSearchProps('endDate'),
     },
     {
       title: 'Trạng thái',
       key: 'status',
       dataIndex: 'status',
+      //...getColumnSearchProps('status'),
     },
     // {
     //   title: 'Thông tin chi tiết',
@@ -154,10 +260,10 @@ function Status(props) {
     },
   ];
 
-  const handleSearch = () => {
-    const input = document.getElementById('search-box').value;
-    setStatus(input);
-  };
+  // const handleSearch = () => {
+  //   const input = document.getElementById('search-box').value;
+  //   setStatus(input);
+  // };
   const onChangePage = (e) => {
     setPage(e);
   };
@@ -211,11 +317,12 @@ function Status(props) {
           textAlign: 'center',
           fontSize: 28,
           fontWeight: 600,
+          marginBottom: 20
         }}
       >
         Lịch sử mượn sách
       </p>
-      <div className="search-box">
+      {/* <div className="search-box">
         <input
           className="input-search"
           placeholder="Tìm kiếm"
@@ -225,7 +332,7 @@ function Status(props) {
         <button className="btn-search" onClick={handleSearch}>
           <SearchOutlined className="icon-search" />
         </button>
-      </div>
+      </div> */}
 
       <Table
         columns={columns}
