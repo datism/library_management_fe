@@ -88,7 +88,7 @@ function Borrow(props) {
         .then((res) => {
           console.log(res);
           if (res !== null)
-            setBookID(res.book);
+            setBookID(res.book['_id']);
         })
         .catch((err) => {
           console.log(err.message);

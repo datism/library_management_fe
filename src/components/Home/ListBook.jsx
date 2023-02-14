@@ -46,21 +46,8 @@ function ListBook(props) {
         ...filter,
       },
     });
-    const books = []
-    for (const book of res.data.items) {
-      console.log(book._id)
-      const res = await axios.get(`${BE_URL}/copies`, {
-        params: {
-          book: book._id,
-          status: 'available',
-        }
-      })
 
-      const bookWithCopyData = book
-      bookWithCopyData['copyLeft'] = res.data.length
-      books.push(bookWithCopyData)
-    }
-    setBookList(books);
+    setBookList(res.data.items);
     setTotal(res.data.totalItems);
   };
 
