@@ -81,7 +81,7 @@ function Status(props) {
         </Space>
       </div>
     ),
-    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined}} />,
     onFilter: (value, record) =>
       record[dataIndex]
         .toString()
@@ -153,6 +153,7 @@ function Status(props) {
         phone: r.subscriber.phone,
         email: r.subscriber.email,
         index: i + 1,
+        book: r.copy.book.title
       })),
     );
 
@@ -200,13 +201,12 @@ function Status(props) {
     },
     {
       title: 'Tên sách',
-      dataIndex: 'copy',
-      key: 'copy',
-      render: (copy) => ({
-        onClick: () => {},
-        children: <NameBook id={copy.book} />
-      }),
-      //...getColumnSearchProps('book'),
+      dataIndex: 'book',
+      key: 'book',
+      render: (sub) => {
+        return <p>{sub.book}</p>;
+    },
+      ...getColumnSearchProps('book'),
     },
     {
       title: 'Ngày mượn',
@@ -224,7 +224,7 @@ function Status(props) {
       title: 'Trạng thái',
       key: 'status',
       dataIndex: 'status',
-      //...getColumnSearchProps('status'),
+      ...getColumnSearchProps('status'),
     },
     // {
     //   title: 'Thông tin chi tiết',
@@ -268,21 +268,21 @@ function Status(props) {
     setPage(e);
   };
 
-  const NameBook = ({ id }) => {
-    const [name, setName] = useState(null);
+  // const NameBook = ({ id }) => {
+  //   const [name, setName] = useState(null);
 
-    useEffect(() => {
-      axios.get(`${BE_URL}/books/${id}`)
-        .then(response => {
-          setName(response.data.title);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, [id]);
+  //   useEffect(() => {
+  //     axios.get(`${BE_URL}/books/${id}`)
+  //       .then(response => {
+  //         setName(response.data.title);
+  //       })
+  //       .catch(error => {
+  //         console.log(error);
+  //       });
+  //   }, [id]);
 
-    return <p>{name ?? 'Loading...'}</p>;
-  };
+  //   return <p>{name ?? 'Loading...'}</p>;
+  // };
 
   // const hanleShowInfo = (record) => {
   //   api(record);
@@ -317,7 +317,8 @@ function Status(props) {
           textAlign: 'center',
           fontSize: 28,
           fontWeight: 600,
-          marginBottom: 20
+          marginBottom: 20,
+
         }}
       >
         Lịch sử mượn sách

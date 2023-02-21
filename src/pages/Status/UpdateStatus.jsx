@@ -9,7 +9,7 @@ import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 
 function UpdateStatus(props) {
-  const statusList = ['inProgress', 'returned', 'lost', 'overdue'];
+  const statusList = ['returned', 'lost', 'overdue'];
   const { updateModalOpen, handleUpdateCancel, handleUpdateOk, borrowID } =
     props;
   const defaultStatus = {
@@ -72,16 +72,17 @@ function UpdateStatus(props) {
           style={{
             alignItems: 'center',
             marginLeft: '10%',
+            
           }}
         >
           {statusList.map((e, index) => (
-            <div key={index}>
+            <div key={index} style={{minHeight: 30}}>
               <input
                 type="radio"
                 checked={index === status}
                 onChange={() => setStatus(index)}
               />
-              <p>{e}</p>
+              {<label style={{marginLeft: 10, textAlign: 'center'}}>{e}</label>}
             </div>
           ))}
         </div>
